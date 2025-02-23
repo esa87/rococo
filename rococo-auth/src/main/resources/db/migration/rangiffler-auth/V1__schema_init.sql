@@ -1,20 +1,17 @@
-create table if not exists `user`
-(
-    id                      binary(16) unique  not null default (UUID_TO_BIN(UUID(), true)),
-    username                varchar(50) unique not null,
-    password                varchar(255)       not null,
-    enabled                 boolean            not null,
-    account_non_expired     boolean            not null,
-    account_non_locked      boolean            not null,
-    credentials_non_expired boolean            not null,
-    primary key (id, username)
+CREATE TABLE IF NOT EXISTS `user` (
+    id BINARY(16) DEFAULT (UUID_TO_BIN(UUID(), true)) PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    enabled BOOLEAN NOT NULL,
+    account_non_expired BOOLEAN NOT NULL,
+    account_non_locked BOOLEAN NOT NULL,
+    credentials_non_expired BOOLEAN NOT NULL
 );
 
-create table if not exists `authority`
-(
-    id        binary(16) unique      not null default (UUID_TO_BIN(UUID(), true)),
-    user_id   binary(16)             not null,
-    authority enum ('read', 'write') not null,
-    primary key (id),
-    constraint fk_authorities_users foreign key (user_id) references `user` (id)
+CREATE TABLE IF NOT EXISTS `authority` (
+    id BINARY(16) NOT NULL DEFAULT (UUID_TO_BIN(UUID(), true)),
+    user_id BINARY(16) NOT NULL,
+    authority ENUM('read', 'write') NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_authorities_users FOREIGN KEY (user_id) REFERENCES `user` (id)
 );
