@@ -29,7 +29,7 @@ public class PaintingController {
 
     @GetMapping("/artist/{id}")
     public Page<PaintingJson> allForArtist(@PathVariable UUID id,
-                                  @PageableDefault Pageable pageable) {
+                                           @PageableDefault Pageable pageable) {
         return paintingService.allPaintingsForArtist(id, pageable);
     }
 
