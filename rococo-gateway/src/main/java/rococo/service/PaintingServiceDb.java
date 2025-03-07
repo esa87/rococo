@@ -94,5 +94,4 @@ public class PaintingServiceDb implements PaintingService {
             return null;
         }
     }
-
 }
