@@ -36,7 +36,7 @@ public class PaintingServiceDb implements PaintingService {
 
     @Override
     public Page<PaintingJson> allPaintingsForArtist(UUID artistId, Pageable pageable) {
-        return  paintingRepository.findByPaintingPageForArtist(artistId, pageable).map(PaintingJson::fromPaintingEntity);
+        return paintingRepository.findByPaintingPageForArtist(artistId, pageable).map(PaintingJson::fromPaintingEntity);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class PaintingServiceDb implements PaintingService {
             paintingRepository.save(entity);
             return PaintingJson.fromPaintingEntity(entity);
         } else {
-            new RuntimeException("Painting not found from id: "+ paintingJson.id());
+            new RuntimeException("Painting not found from id: " + paintingJson.id());
             return null;
         }
     }
