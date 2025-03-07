@@ -1,8 +1,11 @@
 package rococo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import rococo.domain.User;
+import rococo.model.UserJson;
 import rococo.service.UserService;
 
 import java.util.List;
@@ -18,18 +21,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/all")
-    public List<User> all() {
-        return userService.allUsers();
+
+    @GetMapping()
+    public UserJson user(@AuthenticationPrincipal Jwt jwt) {
+        String username = jwt.getClaimAsString("sub");
+        return userService.userFindByName(username);
     }
 
-    @GetMapping("/current")
-    public User currentUser(@RequestPart UUID userId) {
-        return userService.userById(userId);
+    @PatchMapping()
+    public UserJson updateUser(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody UserJson userJson) {
+        UserJson user= new UserJson(
+                userJson.id(),
+                jwt.getClaimAsString("sub"),
+                userJson.firstname(),
+                userJson.lastname(),
+                userJson.avatar()
+        );
+        return userService.updateUser(user);
     }
 
-    @PostMapping("/add")
-    public User addUser(@RequestBody User user) {
-        return  userService.addUser(user);
-    }
 }

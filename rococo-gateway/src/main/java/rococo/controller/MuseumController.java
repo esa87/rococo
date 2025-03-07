@@ -1,11 +1,12 @@
 package rococo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 import rococo.domain.Museum;
+import rococo.model.MuseumJson;
 import rococo.service.MuseumService;
 
 import java.util.List;
@@ -21,14 +22,25 @@ public class MuseumController {
         this.museumService = museumService;
     }
 
-    @GetMapping("/all")
-    public List<Museum> all() {
-        return museumService.allMuseums();
+    @GetMapping()
+    public Page<MuseumJson> all(@RequestParam(required = false) String title,
+                                @PageableDefault Pageable pageable) {
+        return museumService.allMuseums(title, pageable);
     }
 
-    @GetMapping("/current")
-    public Museum currentMuseum(@RequestPart UUID museumId) {
-        return museumService.museumById(museumId);
+    @GetMapping("/{id}")
+    public MuseumJson id(@PathVariable UUID id) {
+        return museumService.museumById(id);
+    }
+
+    @PostMapping()
+    public MuseumJson add(@RequestBody MuseumJson museumJson) {
+        return museumService.addMuseum(museumJson);
+    }
+
+    @PatchMapping()
+    public MuseumJson update(@RequestBody MuseumJson museumJson) {
+       return museumService.updateMuseum(museumJson);
     }
 
 }

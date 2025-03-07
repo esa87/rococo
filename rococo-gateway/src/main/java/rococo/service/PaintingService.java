@@ -1,12 +1,24 @@
 package rococo.service;
 
-import rococo.domain.Painting;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import rococo.model.PaintingJson;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface PaintingService {
-    List<Painting> allPaintings();
 
-    Painting paintingById(UUID paintingId);
+    Page<PaintingJson> allPaintings(@Nullable String searchQuery,
+                                    @Nonnull Pageable pageable);
+
+    Page<PaintingJson> allPaintingsForArtist(@Nonnull UUID artistId, @Nonnull Pageable pageable);
+
+    PaintingJson paintingById(UUID id);
+
+    PaintingJson addPainting(@Nonnull PaintingJson paintingJson);
+
+    PaintingJson updatePainting(@Nonnull PaintingJson paintingJson);
+
 }

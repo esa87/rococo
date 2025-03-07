@@ -7,7 +7,7 @@ public record Painting(
         UUID id,
         String title,
         String description,
-        List<UUID> artist_id,
+        UUID artist_id,
         UUID museum_id,
         byte[] content
 ) {

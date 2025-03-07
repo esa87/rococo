@@ -6,7 +6,9 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.proxy.HibernateProxy;
+import rococo.model.ArtistJson;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -53,6 +55,19 @@ public class ArtistEntity {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public static ArtistEntity fromArtistJson(ArtistJson artistJson){
+        ArtistEntity entity = new ArtistEntity();
+        entity.setId(artistJson.id());
+        entity.setName(artistJson.name());
+        entity.setBiography(artistJson.biography());
+        if (artistJson.photo() != null) {
+            entity.setPhoto(artistJson.photo().getBytes(StandardCharsets.UTF_8));
+        } else {
+            entity.setPhoto(new byte[0]);
+        }
+        return entity;
     }
 
 

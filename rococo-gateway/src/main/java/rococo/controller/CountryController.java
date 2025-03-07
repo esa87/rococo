@@ -1,11 +1,12 @@
 package rococo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 import rococo.domain.Country;
+import rococo.model.CountryJson;
 import rococo.service.CountryService;
 
 import java.util.List;
@@ -22,9 +23,10 @@ public class CountryController {
         this.countryService = countryService;
     }
 
-    @GetMapping("/all")
-    public List<Country> all() {
-        return countryService.allCountries();
+    @GetMapping()
+    public Page<CountryJson> all(@RequestParam(required = false) String name,
+                                 @PageableDefault Pageable pageable) {
+        return countryService.allCountries(name, pageable);
     }
 
     @GetMapping("/current")

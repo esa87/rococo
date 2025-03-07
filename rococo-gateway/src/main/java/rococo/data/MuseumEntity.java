@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.annotations.Parameter;
+import rococo.model.MuseumJson;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,7 +24,7 @@ public class MuseumEntity {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator",
             parameters = {
-                    @org.hibernate.annotations.Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")
+                    @Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy")
             }
     )
     @Column(name = "id", columnDefinition = "BINARY(16) DEFAULT (UUID_TO_BIN(UUID(), true))", updatable = false, nullable = false)
@@ -43,7 +46,7 @@ public class MuseumEntity {
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
-    private CountryEntity countryId;
+    private CountryEntity country;
 
 
     @Override
@@ -60,6 +63,24 @@ public class MuseumEntity {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public static MuseumEntity fromMuseumJson(MuseumJson museumJson){
+        MuseumEntity entity = new MuseumEntity();
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setId(museumJson.geo().country().id());
+        countryEntity.setName(museumJson.geo().country().name());
+        entity.setId(museumJson.id());
+        entity.setTitle(museumJson.title());
+        entity.setDescription(museumJson.description());
+        entity.setCity(museumJson.geo().city());
+        entity.setCountry(countryEntity);
+        if (museumJson.photo() != null) {
+            entity.setPhoto(museumJson.photo().getBytes(StandardCharsets.UTF_8));
+        } else {
+            entity.setPhoto(new byte[0]);
+        };
+        return entity;
     }
 
 }

@@ -1,10 +1,18 @@
 package rococo.service;
 
+import jakarta.annotation.Nonnull;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import rococo.data.UserEntity;
 import rococo.data.UserRepository;
 import rococo.domain.User;
+import rococo.model.UserJson;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,50 +22,51 @@ public class UserServiceDb implements UserService {
 
     private final UserRepository userRepository;
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceDb.class);
+
     @Autowired
     public UserServiceDb(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-
     @Override
-    public List<User> allUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(ue -> {
-                    return new User(
-                            ue.getId(),
-                            ue.getUsername(),
-                            ue.getFirstname(),
-                            ue.getLastname(),
-                            ue.getAvatar()
-                    );
-                }).toList();
+    public UserJson userFindByName(String username) {
+        return userRepository.findByUsername(username)
+                .map(ue ->  UserJson.fromUserEntity(ue)).orElseThrow(() -> new RuntimeException("User not fount this name: " + username));
     }
 
     @Override
-    public User userById(UUID userId) {
-        return userRepository.findById(userId)
-                .map(ue -> new User(
-                        ue.getId(),
-                        ue.getUsername(),
-                        ue.getFirstname(),
-                        ue.getLastname(),
-                        ue.getAvatar()
-                )).orElseThrow(() -> new RuntimeException("User not fount this id: " + userId));
+    public UserJson updateUser(@Nonnull UserJson userJson) {
+        if(userRepository.findByUsername(userJson.username()).isPresent()) {
+            UserEntity entity = UserEntity.fromUserJson(userJson);
+            userRepository.save(entity);
+            return UserJson.fromUserEntity(entity);
+        } else {
+            new RuntimeException("User not found from username: "+userJson.username());
+            return null;
+        }
     }
 
-    @Override
-    public User addUser(User user) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(user.username());
-        UserEntity resultUser = userRepository.save(userEntity);
-        return new User(
-                resultUser.getId(),
-                resultUser.getUsername(),
-                resultUser.getFirstname(),
-                resultUser.getLastname(),
-                resultUser.getAvatar()
-        );
+
+    @Transactional
+    @KafkaListener(topics = "users", groupId = "userdata")
+    public void listener(@Payload UserJson user, ConsumerRecord<String, UserJson> cr) {
+        userRepository.findByUsername(user.username())
+                .ifPresentOrElse(
+                        u -> LOG.info("### User already exist in DB, kafka event will be skipped: {}", cr.toString()),
+                        () -> {
+                            LOG.info("### Kafka consumer record: {}", cr.toString());
+
+                            UserEntity userDataEntity = new UserEntity();
+                            userDataEntity.setUsername(user.username());
+                            UserEntity userEntity = userRepository.save(userDataEntity);
+
+                            LOG.info(
+                                    "### User '{}' successfully saved to database with id: {}",
+                                    user.username(),
+                                    userEntity.getId()
+                            );
+                        }
+                );
     }
 }

@@ -1,11 +1,16 @@
 package rococo.service;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import rococo.data.MuseumEntity;
 import rococo.data.MuseumRepository;
 import rococo.domain.Museum;
+import rococo.model.MuseumJson;
 
-import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -19,30 +24,36 @@ public class MuseumServiceDb implements MuseumService {
     }
 
     @Override
-    public List<Museum> allMuseums() {
-        return museumRepository.findAll().stream()
-                .map(me -> {
-                    return new Museum(
-                            me.getId(),
-                            me.getTitle(),
-                            me.getDescription(),
-                            me.getCity(),
-                            me.getPhoto(),
-                            me.getCountryId().getId()
-                    );
-                }).toList();
+    public Page<MuseumJson> allMuseums(@Nullable String searchQuery,
+                                       @Nonnull Pageable pageable) {
+        Page<MuseumEntity> museumEntity = searchQuery == null
+                ? museumRepository.findAll(pageable)
+                : museumRepository.findByMuseumPage(searchQuery, pageable);
+        return museumEntity.map(MuseumJson::fromMuseumEntity);
     }
 
     @Override
-    public Museum museumById(UUID museumId) {
+    public MuseumJson museumById(UUID museumId) {
         return museumRepository.findById(museumId)
-                .map(me -> new Museum(
-                        me.getId(),
-                        me.getTitle(),
-                        me.getDescription(),
-                        me.getCity(),
-                        me.getPhoto(),
-                        me.getCountryId().getId()
-                )).orElseThrow(() -> new RuntimeException("Museum not found this id: " + museumId));
+                .map(me -> MuseumJson.fromMuseumEntity(me)).orElseThrow(() -> new RuntimeException("Museum not found this id: " + museumId));
+    }
+
+    @Override
+    public MuseumJson addMuseum(@Nonnull MuseumJson museumJson) {
+        MuseumEntity museumEntity = new MuseumEntity().fromMuseumJson(museumJson);
+        museumRepository.save(museumEntity);
+        return MuseumJson.fromMuseumEntity(museumEntity);
+    }
+
+    @Override
+    public MuseumJson updateMuseum(@Nonnull MuseumJson museumJson) {
+        if (museumRepository.findById(museumJson.id()).isPresent()) {
+            MuseumEntity museumEntity = new MuseumEntity().fromMuseumJson(museumJson);
+            museumRepository.save(museumEntity);
+            return MuseumJson.fromMuseumEntity(museumEntity);
+        } else {
+            new RuntimeException("Museum not found this id: " + museumJson.id());
+            return null;
+        }
     }
 }

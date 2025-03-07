@@ -1,9 +1,15 @@
 package rococo.service;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import rococo.data.CountryEntity;
 import rococo.data.CountryRepository;
 import rococo.domain.Country;
+import rococo.model.CountryJson;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,16 +25,13 @@ public class CountryServiceDb implements CountryService {
     }
 
     @Override
-    public List<Country> allCountries() {
-        return countryRepository
-                .findAll()
-                .stream()
-                .map(ce -> {
-                    return new Country(
-                            ce.getId(),
-                            ce.getName()
-                    );
-                }).toList();
+    public Page<CountryJson> allCountries(@Nullable String searchQuery,
+                                          @Nonnull Pageable pageable) {
+        Page<CountryEntity> countryEntityPage = searchQuery == null
+        ?countryRepository.findAll(pageable)
+        :countryRepository.findByCountriesPage(searchQuery,pageable);
+        return countryEntityPage.map(CountryJson::fromCountryEntity);
+
     }
 
     @Override

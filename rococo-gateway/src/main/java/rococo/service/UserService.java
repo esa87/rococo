@@ -1,14 +1,17 @@
 package rococo.service;
 
+import jakarta.annotation.Nonnull;
 import rococo.domain.User;
+import rococo.model.UserJson;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    List<User> allUsers();
 
-    User userById(UUID userId);
+    UserJson userFindByName(@Nonnull String username);
 
-    User addUser(User user);
+    UserJson updateUser(@Nonnull UserJson userJson);
+
+
 }
