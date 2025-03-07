@@ -44,7 +44,21 @@ logging:
     org.springframework.security.oauth2: DEBUG
     org.springframework.boot.autoconfigure: DEBUG
 
+---
+spring:
+  config:
+    activate:
+      on-profile: 'local'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
 rococo-auth:
   base-uri: 'http://127.0.0.1:9000'
+oauth2:
+  client-id: 'client'
