@@ -7,7 +7,7 @@ spring:
   mvc:
     log-request-details: true
   datasource:
-    url: 'jdbc:mysql://127.0.0.1:3306/rococo-auth?serverTimezone=UTC&createDatabaseIfNotExist=true'
+    url: 'jdbc:mysql://127.0.0.1:3306/rococo-auth?serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false'
     hikari:
       connection-timeout: 20000
       minimum-idle: 10

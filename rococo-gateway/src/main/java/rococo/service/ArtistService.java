@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ArtistService {
-    Page<ArtistJson> allArtist(String name,
+    Page<ArtistJson> allArtist(String searchQuery,
                                Pageable pageable);
 
     ArtistJson artistById(UUID artistId);

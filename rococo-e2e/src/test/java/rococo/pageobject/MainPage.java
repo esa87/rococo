@@ -1,0 +1,67 @@
+package rococo.pageobject;
+
+import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import rococo.pageobject.component.Header;
+import rococo.pageobject.component.MessageAlert;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import static com.codeborne.selenide.Selenide.$;
+
+public class MainPage extends BasePage<MainPage> {
+
+    private final SelenideElement paintingButton = $("main[id='page-content'] a[href='/painting']");
+    private final SelenideElement artistButton = $("main[id='page-content'] a[href='/artist']");
+    private final SelenideElement museumButton = $("main[id='page-content'] a[href='/museum']");
+
+    public static final String URL = CFG.frontUrl();
+
+    @Step("Переходим на страницу с картинами с главной страницы")
+    public PaintingPage openPaintingPage() {
+        paintingButton.click();
+        return new PaintingPage();
+    }
+
+    @Step("Переходим на страницу с художниками с главной страницы ")
+    public ArtistPage openArtistPage() {
+        artistButton.click();
+        return new ArtistPage();
+    }
+
+    @Step("Переходим на страницу с музеями с главной страницы ")
+    public MuseumPage openMuseumPage() {
+        museumButton.click();
+        return new MuseumPage();
+    }
+
+    @Step("Проверяем, что пользователь авторизован")
+    public MainPage checkAvatarButton() {
+        new Header().checkVisibleAvatarButton();
+        return this;
+    }
+
+    @Step("Проверяем, что пользователь не авторизован")
+    public MainPage checkLoginButton() {
+        new Header().checkVisibleButtonLogin();
+        return this;
+    }
+
+    @Step("Нажимаем на кнопку 'Войти'")
+    public LoginPage openLoginPage() {
+        return new Header().openLogin();
+    }
+
+    @Step("Открываем профиль пользователя")
+    public ProfilePage openUserProfile() {
+        return new Header().openProfilePage();
+    }
+
+    @Step("Get screenshot of avatar picture")
+    public BufferedImage avatarScreenshot() throws IOException, InterruptedException {
+        Thread.sleep(5000);
+        return new Header().avatarScreenshot();
+    }
+}

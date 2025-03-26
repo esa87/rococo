@@ -4,15 +4,14 @@ import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import rococo.domain.Museum;
+import org.springframework.data.web.PageableDefault;
 import rococo.model.MuseumJson;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface MuseumService {
     Page<MuseumJson> allMuseums(@Nullable String searchQuery,
-                                @Nonnull Pageable pageable);
+                                @Nonnull @PageableDefault Pageable pageable);
 
     MuseumJson museumById(UUID museumId);
 

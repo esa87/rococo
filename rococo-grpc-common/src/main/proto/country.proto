@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package grpc.rococo;
+
+option java_multiple_files = true;
+option java_package = "grpc.rococo";
+option java_outer_classname = "CountryProto";
+
+service CountryService {
+    rpc AllCountries(AllCountriesRequest) returns (CountriesResponse) {}
+    rpc CountryById(CountryIdRequest) returns (CountryResponse) {}
+}
+
+message CountryIdRequest {
+    string id = 1;
+}
+
+message AllCountriesRequest {
+    string search_query = 1;
+    Pageable pageable = 2;
+}
+
+message Pageable {
+    int32 page = 1;
+    int32 size = 2;
+}
+
+message CountriesResponse {
+    repeated CountryResponse countries = 1;
+}
+
+message CountryResponse {
+    string id = 1;
+    string name = 2;
+}

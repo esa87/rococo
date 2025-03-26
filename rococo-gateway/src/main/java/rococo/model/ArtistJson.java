@@ -2,9 +2,8 @@ package rococo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import rococo.data.ArtistEntity;
+import grpc.rococo.ArtistResponse;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,12 +17,12 @@ public record ArtistJson(
         @JsonProperty("photo")
         String photo
 ) {
-    public static ArtistJson fromArtistEntity(ArtistEntity entity){
+    public static ArtistJson fromArtistResponse(ArtistResponse response){
         return new ArtistJson(
-                entity.getId(),
-                entity.getName(),
-                entity.getBiography(),
-                entity.getPhoto() != null && entity.getPhoto().length > 0 ? new String(entity.getPhoto(), StandardCharsets.UTF_8) : null
+                UUID.fromString(response.getId()),
+                response.getName(),
+                response.getBiography(),
+                response.getPhoto()
         );
     }
 }

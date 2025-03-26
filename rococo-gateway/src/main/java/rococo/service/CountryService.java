@@ -16,5 +16,5 @@ public interface CountryService {
             @Nonnull Pageable pageable
             );
 
-    Country countryById(UUID countryId);
+    CountryJson countryById(UUID countryId);
 }

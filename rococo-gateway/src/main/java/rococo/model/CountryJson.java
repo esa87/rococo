@@ -2,7 +2,7 @@ package rococo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import rococo.data.CountryEntity;
+import grpc.rococo.CountryResponse;
 
 import java.util.UUID;
 
@@ -14,10 +14,10 @@ public record CountryJson(
         String name
 ) {
 
-        public static CountryJson fromCountryEntity(CountryEntity countryEntity) {
+        public static CountryJson fromCountryResponse(CountryResponse response) {
                 return new CountryJson(
-                        countryEntity.getId(),
-                        countryEntity.getName()
+                        UUID.fromString(response.getId()),
+                        response.getName()
                 );
         }
 }

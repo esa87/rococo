@@ -2,9 +2,9 @@ package rococo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import rococo.data.MuseumEntity;
+import grpc.rococo.CountryResponse;
+import grpc.rococo.MuseumResponse;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,19 +22,19 @@ public record MuseumJson(
 
 ) {
 
-    public static MuseumJson fromMuseumEntity(MuseumEntity museumEntity) {
+    public static MuseumJson fromMuseumResponse(MuseumResponse museum, CountryResponse country) {
         return new MuseumJson(
-                museumEntity.getId(),
-                museumEntity.getTitle(),
-                museumEntity.getDescription(),
+                UUID.fromString(museum.getId()),
+                museum.getTitle(),
+                museum.getDescription(),
                 new GeoJson(
-                        museumEntity.getCity(),
+                        museum.getCity(),
                         new CountryJson(
-                                museumEntity.getCountry().getId(),
-                                museumEntity.getCountry().getName()
+                               UUID.fromString(country.getId()),
+                                country.getName()
                         )
                 ),
-                museumEntity.getPhoto() != null && museumEntity.getPhoto().length > 0 ? new String(museumEntity.getPhoto(), StandardCharsets.UTF_8) : null
+                museum.getPhoto()
 
         );
     }

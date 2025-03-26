@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'rococo'
@@ -15,23 +16,44 @@ java {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.grpc:spring-grpc-dependencies:0.5.0-SNAPSHOT'
+	}
 }
 
 dependencies {
+	// Spring Boot Starters
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation "org.flywaydb:flyway-core:${project.ext.flywayVersion}"
-	implementation "org.flywaydb:flyway-mysql:${project.ext.flywayVersion}"
-	implementation "org.springframework.kafka:spring-kafka:${project.ext.springKafkaVersion}"
-	runtimeOnly "mysql:mysql-connector-java:${project.ext.mysqlDriverVersion}"
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.data:spring-data-commons'
+
+	// gRPC
+	implementation "io.grpc:grpc-netty-shaded:${project.ext.grpcVersion}" // Для Netty транспорта (клиент)
+	implementation "io.grpc:grpc-protobuf:${project.ext.grpcVersion}" // Для работы с Protobuf
+	implementation "io.grpc:grpc-stub:${project.ext.grpcVersion}" // Для gRPC Stub // Для gRPC сервисов
+	implementation 'org.springframework.retry:spring-retry'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+	// Protobuf
+	implementation "com.google.protobuf:protobuf-java:${project.ext.protobufVersion}"
+	implementation "com.google.protobuf:protobuf-java-util:${project.ext.protobufVersion}"
+	implementation project(':rococo-grpc-common')
+	// Lombok
+	compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
+
+	// Тестирование
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
