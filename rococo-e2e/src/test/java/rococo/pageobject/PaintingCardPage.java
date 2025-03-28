@@ -79,7 +79,7 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
     }
 
     @Step("Close message alert")
-    public PaintingCardPage closeMessage() throws IOException, InterruptedException {
+    public PaintingCardPage closeMessage() {
         messageAlert.closeMessage();
         return this;
     }

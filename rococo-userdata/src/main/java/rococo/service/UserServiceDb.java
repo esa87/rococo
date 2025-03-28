@@ -28,7 +28,7 @@ public class UserServiceDb implements UserService {
     @Override
     public UserJson userFindByName(String username) {
         return userRepository.findByUsername(username)
-                .map(ue ->  UserJson.fromUserEntity(ue)).orElseThrow(() -> new RuntimeException("User not fount this name: " + username));
+                .map(ue ->  UserJson.fromUserEntity(ue)).orElse(new UserJson(null, null, null, null, null));
     }
 
     @Override

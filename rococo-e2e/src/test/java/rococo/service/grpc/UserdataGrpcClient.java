@@ -7,17 +7,19 @@ import rococo.model.UserJson;
 
 import java.util.UUID;
 
-public class UserdataGrpcClient extends BaseGrpc  {
+public class UserdataGrpcClient extends BaseGrpc {
 
     public UserJson getCurrentUser(String username) {
         UserResponse userResponse = userdataBlockingStub.user(UsernameRequest.newBuilder().setUsername(username).build());
-       return  new UserJson(
-               UUID.fromString(userResponse.getId()),
-               userResponse.getUsername()
-       );
+        return new UserJson(
+                userResponse.getId().isBlank()
+                        ? null
+                        : UUID.fromString(userResponse.getId()),
+                userResponse.getUsername()
+        );
     }
 
-    public UserJson editUser(UserJson user){
+    public UserJson editUser(UserJson user) {
         UserResponse userResponse = userdataBlockingStub.updateUser(
                 UserRequest.newBuilder()
                         .setUsername(user.username())
@@ -27,7 +29,7 @@ public class UserdataGrpcClient extends BaseGrpc  {
                         .build()
         );
 
-        return  new UserJson(
+        return new UserJson(
                 UUID.fromString(userResponse.getId()),
                 userResponse.getUsername(),
                 userResponse.getFirstname(),
@@ -36,7 +38,6 @@ public class UserdataGrpcClient extends BaseGrpc  {
                 null
         );
     }
-
 
 
 }

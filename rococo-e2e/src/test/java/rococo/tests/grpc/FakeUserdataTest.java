@@ -5,7 +5,7 @@ import grpc.rococo.UsernameRequest;
 import org.junit.jupiter.api.Test;
 import rococo.model.UserJson;
 
-public class UserdataTest extends BaseGrpcTest {
+public class FakeUserdataTest extends FakeBaseGrpcTest {
     @Test
     void getCurrentUser() {
         UserResponse userResponse = blockingStub.user(UsernameRequest.newBuilder().setUsername("esa1").build());

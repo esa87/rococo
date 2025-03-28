@@ -16,9 +16,9 @@ public class MuseumGrpcClient extends BaseGrpc implements MuseumClient {
     @Override
     public MuseumJson addMuseum(MuseumJson museum) {
         CountryResponse countryResponse = countryBlockingStub.countryById(
-               CountryIdRequest.newBuilder()
-                       .setId(museum.geo().country().id().toString())
-                       .build()
+                CountryIdRequest.newBuilder()
+                        .setId(museum.geo().country().id().toString())
+                        .build()
         );
         MuseumResponse response = museumBlockingStub.addMuseum(
                 MuseumRequest.newBuilder()
@@ -26,7 +26,9 @@ public class MuseumGrpcClient extends BaseGrpc implements MuseumClient {
                         .setDescription(museum.description())
                         .setCity(museum.geo().city())
                         .setCountryId(countryResponse.getId())
-                        .setPhoto(museum.photo())
+                        .setPhoto(museum.photo() == null
+                                ? ""
+                                : museum.photo())
                         .build()
         );
 

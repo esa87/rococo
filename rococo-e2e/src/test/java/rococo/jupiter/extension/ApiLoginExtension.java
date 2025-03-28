@@ -37,7 +37,7 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
     }
 
     @Override
-    public void beforeTestExecution(ExtensionContext context) throws Exception {
+    public void beforeTestExecution(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), ApiLogin.class)
                 .ifPresent(apiLogin -> {
 

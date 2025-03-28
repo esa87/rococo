@@ -19,7 +19,9 @@ public class ArtistGrpcClient extends BaseGrpc implements ArtistClient {
                 ArtistRequest.newBuilder()
                         .setName(artist.name())
                         .setBiography(artist.biography())
-                        .setPhoto(artist.photo())
+                        .setPhoto(artist.photo() == null
+                                ? ""
+                                : artist.photo())
                         .build()
         );
 

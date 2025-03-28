@@ -65,6 +65,7 @@ public class UserTest {
                 .openUserProfile()
                 .uploadAvatar()
                 .updateUserData()
+                .closeMessageAlert()
                 .avatarScreenshot();
 
         Assertions.assertFalse(new ScreenDiffResult(

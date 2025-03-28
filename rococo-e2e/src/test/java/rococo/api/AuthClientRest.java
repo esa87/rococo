@@ -1,6 +1,7 @@
 package rococo.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import retrofit2.Response;
 import rococo.api.interceptors.CodeInterceptor;
@@ -66,6 +67,7 @@ public class AuthClientRest extends RestClient {
         return urlFromRedirect.substring(urlFromRedirect.lastIndexOf("=") + 1);
     }
 
+    @Step("Code verifier {code_verifier}")
     private String genToken(String code_verifier) {
         Response<JsonNode> response;
         try {

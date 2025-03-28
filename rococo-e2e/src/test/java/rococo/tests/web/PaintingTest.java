@@ -102,6 +102,7 @@ public class PaintingTest {
                 .openPaintingCard(painting.title())
                 .editPaintingCard()
                 .editTitlePainting(newTitle)
+                .editArtistPainting()
                 .saveData()
                 .checkTitlePaintingInCard(newTitle);
     }
@@ -119,6 +120,7 @@ public class PaintingTest {
                 .openPaintingCard(painting.title())
                 .editPaintingCard()
                 .editDescriptionPainting(newDescription)
+                .editArtistPainting()
                 .saveData()
                 .checkDescriptionPaintingInCard(newDescription);
     }

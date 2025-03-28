@@ -23,7 +23,7 @@ public class UserRestClient implements UserClient {
         authUserApiClient.registerUser(username, password);
         StopWatch sw = new StopWatch();
         sw.start();
-        final long limitTime = 30000L;
+        final long limitTime = 3000L;
         UserJson user;
         while (sw.getTime(TimeUnit.MILLISECONDS) < limitTime) {
             user = userdataGrpcClient.getCurrentUser(username);

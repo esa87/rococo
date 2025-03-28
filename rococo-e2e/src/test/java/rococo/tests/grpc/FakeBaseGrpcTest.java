@@ -7,7 +7,7 @@ import rococo.config.Config;
 import rococo.jupiter.annotation.meta.GrpcTest;
 
 @GrpcTest
-public class BaseGrpcTest {
+public class FakeBaseGrpcTest {
     protected static final Config CFG = Config.getInstance();
 
 

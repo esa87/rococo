@@ -11,6 +11,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import rococo.service.ThreadSafeCookieStore;
 
 import java.io.ByteArrayInputStream;
 
@@ -45,6 +46,7 @@ public class BrowserExtension implements
         if (WebDriverRunner.hasWebDriverStarted()) {
             Selenide.closeWebDriver();
         }
+        ThreadSafeCookieStore.INSTANCE.removeAll();
     }
 
     @Override

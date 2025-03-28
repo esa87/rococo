@@ -23,8 +23,12 @@ public class GrpcUserService extends UserdataServiceGrpc.UserdataServiceImplBase
 
         responseObserver.onNext(
                 UserResponse.newBuilder()
-                        .setId(userJson.id().toString())
-                        .setUsername(userJson.username())
+                        .setId(userJson.id() == null
+                                ? ""
+                                : userJson.id().toString())
+                        .setUsername(userJson.username() == null
+                                ? ""
+                                : userJson.username())
                         .setFirstname(userJson.firstname() == null
                                 ? ""
                                 : userJson.firstname())
@@ -53,13 +57,13 @@ public class GrpcUserService extends UserdataServiceGrpc.UserdataServiceImplBase
                 UserResponse.newBuilder()
                         .setId(userJson.id().toString())
                         .setUsername(userJson.username())
-                        .setFirstname(userJson.firstname()== null
+                        .setFirstname(userJson.firstname() == null
                                 ? ""
                                 : userJson.firstname())
-                        .setLastname(userJson.lastname()== null
+                        .setLastname(userJson.lastname() == null
                                 ? ""
                                 : userJson.lastname())
-                        .setAvatar(userJson.avatar()== null
+                        .setAvatar(userJson.avatar() == null
                                 ? ""
                                 : userJson.avatar())
                         .build()

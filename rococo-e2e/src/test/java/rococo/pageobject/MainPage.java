@@ -19,6 +19,9 @@ public class MainPage extends BasePage<MainPage> {
 
     public static final String URL = CFG.frontUrl();
 
+    private final MessageAlert messageAlert = new MessageAlert();
+
+
     @Step("Переходим на страницу с картинами с главной страницы")
     public PaintingPage openPaintingPage() {
         paintingButton.click();
@@ -63,5 +66,11 @@ public class MainPage extends BasePage<MainPage> {
     public BufferedImage avatarScreenshot() throws IOException, InterruptedException {
         Thread.sleep(5000);
         return new Header().avatarScreenshot();
+    }
+
+    @Step("Закрыть всплывающее сообщение в карточке музея")
+    public MainPage closeMessageAlert() {
+        messageAlert.closeMessage();
+        return this;
     }
 }

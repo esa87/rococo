@@ -29,7 +29,7 @@ public class EditPaintingPage extends BasePage<EditPaintingPage> {
     public EditPaintingPage addPainting(PaintingJson paintingJson) {
         nameInput.sendKeys(paintingJson.title());
         if (!paintingJson.content().equals("")) photoInput.sendKeys(new File(paintingJson.content()).getAbsolutePath());
-        if (paintingJson.artist() == null) artistsSelect.get(0).click();
+        if (paintingJson.artist() != null) artistsSelect.get(0).click();
         descriptionTextarea.sendKeys(paintingJson.description());
         if (paintingJson.museum() != null) museumSelect.get(0).click();
         return this;
