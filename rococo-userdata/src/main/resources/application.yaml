@@ -10,7 +10,6 @@ spring:
   application:
     name: rococo-userdata
   datasource:
-    url: 'jdbc:mysql://127.0.0.1:3306/rococo-userdata?serverTimezone=UTC&createDatabaseIfNotExist=true'
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -18,8 +17,6 @@ spring:
       idle-timeout: 10000
       max-lifetime: 1000
       auto-commit: true
-    username: root
-    password: secret
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -54,10 +51,33 @@ spring:
       - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  datasource:
+    url: 'jdbc:mysql://127.0.0.1:3306/rococo-userdata?serverTimezone=UTC&createDatabaseIfNotExist=true'
+    username: root
+    password: secret
   kafka:
     bootstrap-servers: 'localhost:9092'
     consumer:
       group-id: 'userdata'
       auto-offset-reset: earliest
-rococo-userdata:
-  base-uri: 'http://127.0.0.1:8089'
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  datasource:
+    url: 'jdbc:mysql://rococo-all-db:3306/rococo-userdata?serverTimezone=UTC&createDatabaseIfNotExist=true'
+    username: root
+    password: secret
+  kafka:
+    bootstrap-servers: 'kafka:9092'
+    consumer:
+      group-id: 'userdata'
+      auto-offset-reset: earliest

@@ -10,7 +10,6 @@ spring:
   application:
     name: rococo-artist
   datasource:
-    url: 'jdbc:mysql://127.0.0.1:3306/rococo-artist?serverTimezone=UTC&createDatabaseIfNotExist=true'
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -55,11 +54,28 @@ spring:
   config:
     activate:
       on-profile: 'local'
+  datasource:
+    url: 'jdbc:mysql://127.0.0.1:3306/rococo-artist?serverTimezone=UTC&createDatabaseIfNotExist=true'
+    username: root
+    password: secret
   autoconfigure:
     exclude:
       - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
 
-rococo-artist:
-  base-uri: 'http://127.0.0.1:8091'
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  datasource:
+    url: 'jdbc:mysql://rococo-all-db:3306/rococo-artist?serverTimezone=UTC&createDatabaseIfNotExist=true'
+    username: root
+    password: secret
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'

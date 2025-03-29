@@ -11,16 +11,12 @@ export ARCH=$(uname -m)
 echo '### Java version ###'
 java --version
 
-if [[ "$1" = "gql" ]]; then
-  export FRONT="niffler-ng-gql-client"
-else
-  export FRONT="niffler-ng-client"
-fi
+export FRONT="rococo-client"
 
 docker compose down
 
 docker_containers=$(docker ps -a -q)
-docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'niffler')
+docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'rococo')
 
 if [ ! -z "$docker_containers" ]; then
   echo "### Stop containers: $docker_containers ###"
@@ -34,7 +30,7 @@ if [ ! -z "$docker_images" ]; then
 fi
 
 bash ./gradlew clean
-bash ./gradlew jibDockerBuild -x :niffler-e-2-e-tests:test
+bash ./gradlew jibDockerBuild -x :rococo-e2e:test
 
 if [ "$2" == "firefox" ]; then
   export BROWSER="firefox"

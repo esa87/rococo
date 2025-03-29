@@ -36,7 +36,7 @@ public class ProfilePage extends BasePage<ProfilePage> {
 
     @Step("Загружаем аватар")
     public ProfilePage uploadAvatar() {
-        final File uploadFile = new File("src/test/resources/uploadPicture/avatar.png");
+        final File uploadFile = new File("rococo-e2e/src/test/resources/uploadPicture/avatar.png");
         avatarInput.sendKeys(uploadFile.getAbsolutePath());
         return this;
     }

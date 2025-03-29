@@ -66,7 +66,7 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
                                                     ),
                                                     null
                                             )),
-                                            encodeImageWithMime("src/test/resources/uploadPicture/mishki.jpg")
+                                            encodeImageWithMime("rococo-e2e/src/test/resources/uploadPicture/mishki.jpg")
                                     )
                             );
                         } catch (Exception e) {

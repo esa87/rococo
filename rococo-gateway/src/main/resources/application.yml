@@ -56,3 +56,41 @@ grpc:
       address: static://127.0.0.1:8089
       negotiationType: PLAINTEXT
 
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://auth.rococo.dc:9000'
+
+rococo-front:
+  base-uri: 'http://frontend.rococo.dc'
+rococo-gateway:
+  base-uri: 'http://gateway.rococo.dc:8080'
+
+grpc:
+  client:
+    rococo-artist:
+      address: static://artist.rococo.dc:8091
+      negotiationType: PLAINTEXT
+    rococo-country:
+      address: static://country.rococo.dc:8092
+      negotiationType: PLAINTEXT
+    rococo-museum:
+      address: static://museum.rococo.dc:8093
+      negotiationType: PLAINTEXT
+    rococo-painting:
+      address: static://painting.rococo.dc:8094
+      negotiationType: PLAINTEXT
+    rococo-userdata:
+      address: static://userdata.rococo.dc:8089
+      negotiationType: PLAINTEXT

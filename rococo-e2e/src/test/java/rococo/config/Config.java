@@ -3,7 +3,9 @@ package rococo.config;
 public interface Config {
 
     static Config getInstance(){
-        return LocalConfig.INSTANCE;
+        return "docker".equals(System.getProperty("test.env", System.getenv("test.env")))
+                ? DockerConfig.INSTANCE
+                : LocalConfig.INSTANCE;
     }
 
     String frontUrl();

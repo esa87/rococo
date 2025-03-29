@@ -41,7 +41,7 @@ public class ScreenShotTestExtension implements ParameterResolver, TestExecution
         ScreenShotTest annotation = context.getRequiredTestMethod().getAnnotation(ScreenShotTest.class);
         if (annotation.rewriteExpected()) {
             try {
-                ImageIO.write(getActual(), "png", new File("src/test/resources/" + annotation.value()).getAbsoluteFile());
+                ImageIO.write(getActual(), "png", new File("rococo-e2e/src/test/resources/" + annotation.value()).getAbsoluteFile());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

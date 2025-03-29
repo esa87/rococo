@@ -83,7 +83,7 @@ public class PaintingTest {
                         RandomDataUtils.randomSentence(5),
                         artist,
                         museum,
-                        "src/test/resources/uploadPicture/mishki.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/mishki.jpg"
                 ))
                 .saveNewData()
                 .searchPaintingByTitle(title);
@@ -103,6 +103,7 @@ public class PaintingTest {
                 .editPaintingCard()
                 .editTitlePainting(newTitle)
                 .editArtistPainting()
+                .editMuseumPainting()
                 .saveData()
                 .checkTitlePaintingInCard(newTitle);
     }
@@ -121,6 +122,7 @@ public class PaintingTest {
                 .editPaintingCard()
                 .editDescriptionPainting(newDescription)
                 .editArtistPainting()
+                .editMuseumPainting()
                 .saveData()
                 .checkDescriptionPaintingInCard(newDescription);
     }
@@ -158,6 +160,7 @@ public class PaintingTest {
                 .openPaintingCard(painting.title())
                 .editPaintingCard()
                 .editArtistPainting()
+                .editMuseumPainting()
                 .saveData()
                 .getArtistValue(painting.artist().name());
     }
@@ -176,7 +179,7 @@ public class PaintingTest {
                 .editPaintingCard()
                 .editArtistPainting()
                 .editMuseumPainting()
-                .editPhotoPainting("src/test/resources/uploadPicture/opyat_dvoyka.jpg")
+                .editPhotoPainting("rococo-e2e/src/test/resources/uploadPicture/opyat_dvoyka.jpg")
                 .saveData()
                 .closeMessage()
                 .avatarScreenshot();
@@ -199,7 +202,7 @@ public class PaintingTest {
                 .searchPaintingByTitle(painting.title())
                 .openPaintingCard(painting.title())
                 .editPaintingCard()
-                .editPhotoPainting("src/test/resources/uploadPicture/opyat_dvoyka.jpg")
+                .editPhotoPainting("rococo-e2e/src/test/resources/uploadPicture/opyat_dvoyka.jpg")
                 .cancelSaveData()
                 .avatarScreenshot();
 
@@ -241,7 +244,7 @@ public class PaintingTest {
                         RandomDataUtils.randomSentence(5),
                         artist,
                         museum,
-                        "src/test/resources/uploadPicture/mishki.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/mishki.jpg"
                 ))
                 .saveWrongData()
                 .checkButtonSaveIsVisible();
@@ -265,7 +268,7 @@ public class PaintingTest {
                         "",
                         artist,
                         museum,
-                        "src/test/resources/uploadPicture/mishki.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/mishki.jpg"
                 ))
                 .saveWrongData()
                 .checkButtonSaveIsVisible();
@@ -288,7 +291,7 @@ public class PaintingTest {
                         RandomDataUtils.randomSentence(5),
                         null,
                         museum,
-                        "src/test/resources/uploadPicture/mishki.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/mishki.jpg"
                 ))
                 .saveWrongData()
                 .checkButtonSaveIsVisible();
@@ -310,7 +313,7 @@ public class PaintingTest {
                         RandomDataUtils.randomSentence(5),
                         artist,
                         null,
-                        "src/test/resources/uploadPicture/mishki.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/mishki.jpg"
                 ))
                 .saveWrongData()
                 .checkButtonSaveIsVisible();

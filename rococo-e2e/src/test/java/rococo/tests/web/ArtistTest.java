@@ -34,7 +34,7 @@ public class ArtistTest {
                 null,
                 RandomDataUtils.randomUsername(),
                 RandomDataUtils.randomSentence(10),
-                "src/test/resources/uploadPicture/Shishkin_I_I.jpg"
+                "rococo-e2e/src/test/resources/uploadPicture/Shishkin_I_I.jpg"
         );
         Selenide.open(CFG.frontUrl(), MainPage.class)
                 .openArtistPage()
@@ -75,7 +75,7 @@ public class ArtistTest {
                 .searchArtistByName(artist.name())
                 .openArtistCard(artist.name())
                 .openEditArtistCard()
-                .editPhotoArtist("src/test/resources/uploadPicture/Polenov_V_D.jpg")
+                .editPhotoArtist("rococo-e2e/src/test/resources/uploadPicture/Polenov_V_D.jpg")
                 .saveUpdateData()
                 .closeMessageAlert()
                 .artistPhotoScreenshot();
@@ -179,7 +179,7 @@ public class ArtistTest {
                         RandomDataUtils.randomSentence(5),
                         null,
                         museum,
-                        "src/test/resources/uploadPicture/mishki.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/mishki.jpg"
                 ))
                 .saveDataForArtist()
                 .closeMessageAlert()

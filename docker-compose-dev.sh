@@ -8,16 +8,12 @@ export ARCH=$(uname -m)
 echo '### Java version ###'
 java --version
 
-if [[ "$1" = "gql" ]]; then
-  export FRONT="niffler-ng-gql-client"
-else
-  export FRONT="niffler-ng-client"
-fi
+export FRONT="rococo-client"
 
 docker compose down
 
 docker_containers=$(docker ps -a -q)
-docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'niffler')
+docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'rococo')
 
 if [ ! -z "$docker_containers" ]; then
   echo "### Stop containers: $docker_containers ###"
@@ -33,12 +29,12 @@ fi
 bash ./gradlew clean
 if [ "$1" = "push" ] || [ "$2" = "push" ]; then
   echo "### Build & push images ###"
-  bash ./gradlew jib -x :niffler-e-2-e-tests:test
-  docker compose push frontend.niffler.dc
+  bash ./gradlew jib -x :rococo-e2e:test
+  docker compose push frontend.rococo.dc
 else
   echo "### Build images ###"
-  bash ./gradlew jibDockerBuild -x :niffler-e-2-e-tests:test
+  bash ./gradlew jibDockerBuild -x :rococo-e2e:test
 fi
 
-docker compose up -d
+docker compose up --pull never -d
 docker ps -a

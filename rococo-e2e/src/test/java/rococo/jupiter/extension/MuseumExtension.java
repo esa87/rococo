@@ -41,11 +41,11 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
                                             new GeoJson(
                                                     defaultCity,
                                                     new CountryJson(
-                                                            UUID.fromString("11f0003d-5d8f-20cd-969b-569bd7e2abf7"),
+                                                            null,
                                                             null
                                                     )
                                             ),
-                                            encodeImageWithMime("src/test/resources/uploadPicture/museum.jpg")
+                                            encodeImageWithMime("rococo-e2e/src/test/resources/uploadPicture/museum.jpg")
                                     )
                             );
                         } catch (Exception e) {

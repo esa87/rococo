@@ -72,7 +72,7 @@ public class MuseumTest {
                                 RandomDataUtils.randomCategoryName(),
                                 null
                         ),
-                        "src/test/resources/uploadPicture/museum.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/museum.jpg"
 
                 ))
                 .saveNewData()
@@ -91,7 +91,7 @@ public class MuseumTest {
                 .searchMuseumByName(museum.title())
                 .openMuseumCard(museum.title())
                 .openCardToUpdateMuseum()
-                .editPhotoMuseum("src/test/resources/uploadPicture/newMuseum.jpg")
+                .editPhotoMuseum("rococo-e2e/src/test/resources/uploadPicture/newMuseum.jpg")
                 .saveUpdateData()
                 .closeMessageAlert()
                 .museumPhotoScreenshot();
@@ -203,7 +203,7 @@ public class MuseumTest {
                                 RandomDataUtils.randomCategoryName(),
                                 null
                         ),
-                        "src/test/resources/uploadPicture/museum.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/museum.jpg"
 
                 ))
                 .clickSave()
@@ -227,7 +227,7 @@ public class MuseumTest {
                                 RandomDataUtils.randomCategoryName(),
                                 null
                         ),
-                        "src/test/resources/uploadPicture/museum.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/museum.jpg"
 
                 ))
                 .clickSave()
@@ -251,7 +251,7 @@ public class MuseumTest {
                                 "",
                                 null
                         ),
-                        "src/test/resources/uploadPicture/museum.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/museum.jpg"
 
                 ))
                 .clickSave()
@@ -298,7 +298,7 @@ public class MuseumTest {
                                 RandomDataUtils.randomCategoryName(),
                                 new CountryJson(null, null)
                         ),
-                        "src/test/resources/uploadPicture/museum.jpg"
+                        "rococo-e2e/src/test/resources/uploadPicture/museum.jpg"
 
                 ))
                 .clickSave()

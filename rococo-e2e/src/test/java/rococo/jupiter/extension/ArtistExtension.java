@@ -32,7 +32,7 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
                                             null,
                                             name,
                                             artistAnno.biography(),
-                                            encodeImageWithMime("src/test/resources/uploadPicture/Shishkin_I_I.jpg")
+                                            encodeImageWithMime("rococo-e2e/src/test/resources/uploadPicture/Shishkin_I_I.jpg")
                                     )
                             );
                         } catch (Exception e) {
