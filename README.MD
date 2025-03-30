@@ -80,11 +80,10 @@ http://127.0.0.1:3000/
 
 ### Тестирование
 
-Для запуска end-to-end тестов в консоли выполнить следующие команды:
+Для запуска end-to-end тестов в консоли выполнить следующую команду:
 
 ```posh
-cd rococo-e2e
-gradle test
+./gradlew test
 ```
 
 Либо в IDE нажимаем правой кнопкой мыши по каталогу rococo-e2e и в контекстном меню выбираем пункт Run'Tests in 'rococo.rococo-e2e''
@@ -143,3 +142,6 @@ http://127.0.0.1:9091/#/
 Результаты автотестов можно посмотреть в allure-отчете по адресу: 
 
 http://allure:5252/allure-docker-service-ui/projects/default
+
+
+<img src="allure-report.png" width="600">

@@ -14,6 +14,8 @@ public interface Config {
 
     String gatewayUrl();
 
+    String allureUrl();
+
     String userGrpcAddress();
 
     String artistGrpcAddress();

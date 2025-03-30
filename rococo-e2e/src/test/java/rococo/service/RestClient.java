@@ -23,7 +23,7 @@ public abstract class RestClient {
     protected final Retrofit retrofit;
 
     public RestClient(String baseUrl) {
-        this(baseUrl, false, JacksonConverterFactory.create(), HEADERS, null);
+        this(baseUrl, false, JacksonConverterFactory.create(), BODY, null);
     }
 
     public RestClient(String baseUrl, boolean followRedirect) {

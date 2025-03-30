@@ -1,7 +1,9 @@
 package rococo.tests.rest;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import rococo.api.GatewayApiClient;
 import rococo.jupiter.annotation.ApiLogin;
@@ -15,11 +17,14 @@ import rococo.utils.RandomDataUtils;
 import java.util.List;
 
 @RestTest
+@DisplayName("Тесты REST API для картин")
+@Epic("Управление картинами")
 public class PaintingRestTest {
 
     private final GatewayApiClient gatewayApiClient = new GatewayApiClient();
 
     @Description("Проверка дублирования после изменения названия")
+    @DisplayName("Изменение названия картины не должно создавать дубликат")
     @Painting
     @User
     @ApiLogin
@@ -42,6 +47,7 @@ public class PaintingRestTest {
     }
 
     @Description("Проверка дублирования после изменения описания")
+    @DisplayName("Изменение описания картины не должно создавать дубликат")
     @Painting
     @User
     @ApiLogin

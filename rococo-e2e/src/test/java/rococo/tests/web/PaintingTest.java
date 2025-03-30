@@ -4,6 +4,7 @@ import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import rococo.api.GatewayApiClient;
 import rococo.config.Config;
@@ -20,7 +21,8 @@ import rococo.utils.ScreenDiffResult;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-@Epic("")
+@Epic("Управление картинами")
+@DisplayName("Тесты работы с картинами")
 @WebTest
 public class PaintingTest {
     private final static Config CFG = Config.getInstance();
@@ -28,6 +30,7 @@ public class PaintingTest {
 
 
     @Description("Проверка, что кнопка 'Добавить картину' не отображается для неавторизованных пользователей")
+    @DisplayName("Неавторизованный пользователь: проверка видимости кнопки добавления")
     @Test
     void checkNotVisibleAddPaintingButtonThenNoAuthorize() {
         Selenide.open(CFG.frontUrl(), MainPage.class)
@@ -36,6 +39,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка, что кнопка 'Редактировать картину' не отображается для неавторизованных пользователей при поиске")
+    @DisplayName("Неавторизованный пользователь: проверка видимости кнопки редактирования")
     @Painting
     @Test
     void checkNotVisibleEditPaintingButtonThenNoAuthorize(PaintingJson painting) {
@@ -45,6 +49,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка поиска картин для неавторизованных пользователей")
+    @DisplayName("Неавторизованный пользователь: поиск картины")
     @Painting
     @Test
     void searchPaintingThenNoAuthorize(PaintingJson painting) {
@@ -56,6 +61,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка поиска картин по части названия для авторизованного пользователя")
+    @DisplayName("Поиск картины по части названия")
     @Painting
     @User
     @ApiLogin
@@ -67,6 +73,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка добавления новой картины авторизованным пользователем")
+    @DisplayName("Добавление новой картины")
     @Artist
     @Museum
     @User
@@ -90,6 +97,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка редактирования названия картины")
+    @DisplayName("Редактирование названия картины")
     @Painting
     @User
     @ApiLogin
@@ -109,6 +117,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка редактирования описания картины")
+    @DisplayName("Редактирование описания картины")
     @Painting
     @User
     @ApiLogin
@@ -128,6 +137,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка редактирования музея для картины")
+    @DisplayName("Изменение музея для картины")
     @Painting
     @Museum
     @User
@@ -149,6 +159,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка редактирования художника для картины")
+    @DisplayName("Изменение художника для картины")
     @Painting
     @User
     @ApiLogin
@@ -166,6 +177,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка изменения изображения картины")
+    @DisplayName("Обновление изображения картины")
     @Test
     @Painting
     @User
@@ -191,6 +203,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка отмены сохранения изменений картины")
+    @DisplayName("Отмена изменений картины")
     @Test
     @Painting
     @User
@@ -213,6 +226,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка валидации описания картины (менее 10 символов)")
+    @DisplayName("Валидация: описание менее 10 символов")
     @Test
     @Painting
     @User
@@ -229,6 +243,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка валидации названия картины (пустое значение)")
+    @DisplayName("Валидация: пустое название")
     @Test
     @User
     @ApiLogin
@@ -252,6 +267,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка валидации описания картины (пустое значение)")
+    @DisplayName("Валидация: пустое описание")
     @Test
     @User
     @ApiLogin
@@ -276,6 +292,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка валидации художника (не выбран художник)")
+    @DisplayName("Валидация: не выбран художник")
     @Test
     @User
     @ApiLogin
@@ -298,6 +315,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка валидации музея (не выбран музей)")
+    @DisplayName("Валидация: не выбран музей")
     @Test
     @User
     @ApiLogin
@@ -320,6 +338,7 @@ public class PaintingTest {
     }
 
     @Description("Проверка валидации изображения (не загружено изображение)")
+    @DisplayName("Валидация: сохранение картины без изображения")
     @Test
     @User
     @ApiLogin

@@ -13,7 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @ExtendWith({
         BrowserExtension.class,
-        TestMethodContextExtension.class,
         AllureJunit5.class,
         UserExtension.class,
         ArtistExtension.class,

@@ -2,6 +2,7 @@ package rococo.tests.web;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,11 +22,13 @@ import java.io.IOException;
 
 @WebTest
 @DisplayName("Проверка работы с сущностью художник")
+@Epic("Управление художниками")
 public class ArtistTest {
 
     private final static Config CFG = Config.getInstance();
 
     @Description("Создание нового художника с валидными данными и проверка его отображения в поиске")
+    @DisplayName("Создание нового художника")
     @Test
     @User
     @ApiLogin
@@ -45,6 +48,7 @@ public class ArtistTest {
     }
 
     @Description("Изменение имени существующего художника и проверка обновленных данных")
+    @DisplayName("Редактирование имени художника")
     @Test
     @User
     @ApiLogin
@@ -64,6 +68,7 @@ public class ArtistTest {
     }
 
     @Description("Визуальная проверка обновления фотографии художника через сравнение скриншотов")
+    @DisplayName("Обновление фотографии художника")
     @Test
     @User
     @ApiLogin
@@ -87,6 +92,7 @@ public class ArtistTest {
     }
 
     @Description("Обновление биографии художника и проверка сохранения изменений")
+    @DisplayName("Редактирование биографии художника")
     @Test
     @User
     @Artist
@@ -106,6 +112,7 @@ public class ArtistTest {
 
 
     @Description("Проверка, что кнопка создания художника не отображается для неавторизованных пользователей")
+    @DisplayName("Проверка видимости кнопки создания для неавторизованного пользователя")
     @Test
     void checkNotAuthorizeNotVisibleCreateArtistButton() {
         Selenide.open(CFG.frontUrl(), MainPage.class)
@@ -115,6 +122,7 @@ public class ArtistTest {
     }
 
     @Description("Проверка отсутствия кнопки редактирования художника для неавторизованного пользователя")
+    @DisplayName("Проверка видимости кнопки редактирования для неавторизованного пользователя")
     @Test
     @Artist
     void checkNotAuthorizeNotVisibleUpdateArtistButton(ArtistJson artistJson) {
@@ -127,6 +135,7 @@ public class ArtistTest {
     }
 
     @Description("Проверка, что кнопка добавления картины скрыта для неавторизованных пользователей")
+    @DisplayName("Проверка видимости кнопки добавления картины для неавторизованного пользователя")
     @Test
     @Artist
     void checkNotAuthorizeNotVisibleAddPictureButton(ArtistJson artistJson) {
@@ -139,6 +148,7 @@ public class ArtistTest {
 
 
     @Description("Поиск художника по полному имени")
+    @DisplayName("Поиск художника по полному имени")
     @Test
     @Artist
     @User
@@ -150,6 +160,7 @@ public class ArtistTest {
     }
 
     @Description("Поиск художника по части имени (проверка поисковой выдачи)")
+    @DisplayName("Поиск художника по части имени")
     @Test
     @Artist
     @User
@@ -161,6 +172,7 @@ public class ArtistTest {
     }
 
     @Description("Добавление новой картины к существующему художнику с проверкой создания")
+    @DisplayName("Добавление картины к художнику")
     @Test
     @Artist
     @Museum
@@ -185,12 +197,5 @@ public class ArtistTest {
                 .closeMessageAlert()
                 .checkPaintingIsCreate();
     }
-
-
-//    @Description("Проверка отображения всех картин художника (тест-заглушка)")
-//    @Test
-//    void checkVisibleAllPaintings() {
-//        Assertions.assertTrue(false);
-//    }
 
 }

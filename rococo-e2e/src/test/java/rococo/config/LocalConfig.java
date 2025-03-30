@@ -19,6 +19,11 @@ public enum LocalConfig implements Config{
     }
 
     @Override
+    public String allureUrl() {
+        return "";
+    }
+
+    @Override
     public String userGrpcAddress() {
         return "127.0.0.1";
     }

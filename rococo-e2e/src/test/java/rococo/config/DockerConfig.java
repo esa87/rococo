@@ -19,6 +19,11 @@ public enum DockerConfig implements Config{
     }
 
     @Override
+    public String allureUrl() {
+        return "http://allure:5050";
+    }
+
+    @Override
     public String userGrpcAddress() {
         return "userdata.rococo.dc";
     }

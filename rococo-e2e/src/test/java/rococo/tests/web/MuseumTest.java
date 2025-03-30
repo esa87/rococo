@@ -3,7 +3,9 @@ package rococo.tests.web;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import rococo.config.Config;
 import rococo.jupiter.annotation.ApiLogin;
@@ -23,11 +25,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @WebTest
+@DisplayName("Тесты работы с музеями")
+@Epic("Управление музеями")
 public class MuseumTest {
 
     private final static Config CFG = Config.getInstance();
 
     @Description("Поиск музея по названию без авторизации в системе")
+    @DisplayName("Поиск музея без авторизации")
     @Test
     @Museum
     void searchMuseumNotAuthorize(MuseumJson museum) {
@@ -37,6 +42,7 @@ public class MuseumTest {
     }
 
     @Description("Просмотр карточки музея без авторизации. Проверка отсутствия кнопки редактирования")
+    @DisplayName("Просмотр карточки музея без авторизации")
     @Test
     @Museum
     void openMuseumCardNotAuthorize(MuseumJson museum) {
@@ -48,6 +54,7 @@ public class MuseumTest {
     }
 
     @Description("Проверка отсутствия кнопки 'Добавить музей' для неавторизованного пользователя")
+    @DisplayName("Проверка видимости кнопки добавления музея")
     @Test
     void checkNotVisibleButtonAddMuseumNotAuthorize() {
         Selenide.open(CFG.frontUrl(), MainPage.class)
@@ -56,6 +63,7 @@ public class MuseumTest {
     }
 
     @Description("Создание нового музея авторизованным пользователем")
+    @DisplayName("Создание нового музея")
     @Test
     @User
     @ApiLogin
@@ -80,6 +88,7 @@ public class MuseumTest {
     }
 
     @Description("Обновление фотографии музея авторизованным пользователем")
+    @DisplayName("Обновление фотографии музея")
     @Test
     @Museum
     @User
@@ -104,6 +113,7 @@ public class MuseumTest {
     }
 
     @Description("Изменение названия музея с проверкой сохранения данных")
+    @DisplayName("Редактирование названия музея")
     @Test
     @Museum
     @User
@@ -122,6 +132,7 @@ public class MuseumTest {
     }
 
     @Description("Обновление страны расположения музея")
+    @DisplayName("Изменение страны музея")
     @Test
     @Museum
     @User
@@ -143,6 +154,7 @@ public class MuseumTest {
     }
 
     @Description("Изменение города расположения музея (хардкод: Тула)")
+    @DisplayName("Изменение города музея")
     @Test
     @Museum
     @User
@@ -166,6 +178,7 @@ public class MuseumTest {
     }
 
     @Description("Редактирование описания музея с генерацией случайного текста")
+    @DisplayName("Редактирование описания музея")
     @Test
     @Museum
     @User
@@ -187,6 +200,7 @@ public class MuseumTest {
 
 
     @Description("Проверка валидации: попытка сохранения музея с пустым названием")
+    @DisplayName("Валидация: пустое название музея")
     @Test
     @User
     @ApiLogin
@@ -212,6 +226,7 @@ public class MuseumTest {
 
 
     @Description("Проверка валидации: попытка сохранения музея с пустым описанием")
+    @DisplayName("Валидация: пустое описание музея")
     @Test
     @User
     @ApiLogin
@@ -236,6 +251,7 @@ public class MuseumTest {
 
 
     @Description("Проверка валидации: попытка сохранения музея с пустым городом")
+    @DisplayName("Валидация: пустой город музея")
     @Test
     @User
     @ApiLogin
@@ -260,6 +276,7 @@ public class MuseumTest {
 
 
     @Description("Проверка валидации: попытка сохранения музея без загруженного изображения")
+    @DisplayName("Валидация: отсутствие изображения музея")
     @Test
     @User
     @ApiLogin
@@ -283,6 +300,7 @@ public class MuseumTest {
     }
 
     @Description("Проверка валидации: попытка сохранения музея без выбранной страны")
+    @DisplayName("Валидация: отсутствие страны музея")
     @Test
     @User
     @ApiLogin

@@ -4,6 +4,7 @@ import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import rococo.config.Config;
 import rococo.jupiter.annotation.ApiLogin;
@@ -20,11 +21,13 @@ import java.io.IOException;
 
 @WebTest
 @Epic("Управление профилем пользователя")
+@DisplayName("Тесты управления профилем пользователя")
 public class UserTest {
 
     private final static Config CFG = Config.getInstance();
 
     @Description("Проверка изменения имени пользователя в профиле")
+    @DisplayName("Изменение имени пользователя")
     @Test
     @User
     @ApiLogin
@@ -40,6 +43,7 @@ public class UserTest {
     }
 
     @Description("Проверка изменения фамилии пользователя в профиле")
+    @DisplayName("Изменение фамилии пользователя")
     @Test
     @User
     @ApiLogin
@@ -55,6 +59,7 @@ public class UserTest {
     }
 
     @Description("Проверка загрузки и изменения аватара пользователя")
+    @DisplayName("Обновление аватара пользователя")
     @Test
     @User
     @ApiLogin
@@ -75,6 +80,7 @@ public class UserTest {
     }
 
     @Description("Проверка выхода пользователя из системы после авторизации")
+    @DisplayName("Выход пользователя из системы")
     @Test
     @User
     @ApiLogin
