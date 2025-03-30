@@ -2,55 +2,20 @@ server:
   port: 8080
 
 spring:
+  grpc:
+    server:
+      reflection:
+        enabled: false
   application:
     name: rococo-gateway
-  graphql:
-    graphiql:
-      enabled: true
-    schema:
-      introspection:
-        enabled: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: 'http://127.0.0.1:9000'
-  datasource:
-    url: 'jdbc:mysql://127.0.0.1:3306/rococo-gateway?serverTimezone=UTC&createDatabaseIfNotExist=true'
-    hikari:
-      connection-timeout: 20000
-      minimum-idle: 10
-      maximum-pool-size: 30
-      idle-timeout: 10000
-      max-lifetime: 1000
-      auto-commit: true
-    username: root
-    password: secret
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
-    baseline-version: 0
-    schemas: rococo-gateway
-    locations: classpath:db/migration/rococo-gateway
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    show-sql: false
-    generate-ddl: true
-    open-in-view: false
-
 logging:
   level:
     root: INFO
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+    io.grpc: DEBUG
+    org.springframework.grpc: DEBUG
 
 ---
 spring:
@@ -62,18 +27,70 @@ spring:
       - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
       - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
-  kafka:
-    bootstrap-servers: 'localhost:9092'
-    consumer:
-      group-id: 'userdata'
-      auto-offset-reset: earliest
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: 'http://127.0.0.1:9000'
+
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
 rococo-gateway:
   base-uri: 'http://127.0.0.1:8080'
 
+grpc:
+  client:
+    rococo-artist:
+      address: static://127.0.0.1:8091
+      negotiationType: PLAINTEXT
+    rococo-country:
+      address: static://127.0.0.1:8092
+      negotiationType: PLAINTEXT
+    rococo-museum:
+      address: static://127.0.0.1:8093
+      negotiationType: PLAINTEXT
+    rococo-painting:
+      address: static://127.0.0.1:8094
+      negotiationType: PLAINTEXT
+    rococo-userdata:
+      address: static://127.0.0.1:8089
+      negotiationType: PLAINTEXT
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://auth.rococo.dc:9000'
+
+rococo-front:
+  base-uri: 'http://frontend.rococo.dc'
+rococo-gateway:
+  base-uri: 'http://gateway.rococo.dc:8080'
+
+grpc:
+  client:
+    rococo-artist:
+      address: static://artist.rococo.dc:8091
+      negotiationType: PLAINTEXT
+    rococo-country:
+      address: static://country.rococo.dc:8092
+      negotiationType: PLAINTEXT
+    rococo-museum:
+      address: static://museum.rococo.dc:8093
+      negotiationType: PLAINTEXT
+    rococo-painting:
+      address: static://painting.rococo.dc:8094
+      negotiationType: PLAINTEXT
+    rococo-userdata:
+      address: static://userdata.rococo.dc:8089
+      negotiationType: PLAINTEXT

@@ -2,10 +2,8 @@ package rococo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Setter;
-import rococo.data.UserEntity;
+import grpc.rococo.UserResponse;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 
@@ -23,13 +21,13 @@ public record UserJson(
         String avatar
 ) {
 
-        public static UserJson fromUserEntity(UserEntity entity){
+        public static UserJson fromUserResponse(UserResponse response){
                 return new UserJson(
-                        entity.getId(),
-                        entity.getUsername(),
-                        entity.getFirstname(),
-                        entity.getLastname(),
-                        entity.getAvatar()!= null && entity.getAvatar().length > 0 ? new String(entity.getAvatar(), StandardCharsets.UTF_8) : null
+                        UUID.fromString(response.getId()),
+                        response.getUsername(),
+                        response.getFirstname(),
+                        response.getLastname(),
+                        response.getAvatar()
                 );
         }
 }

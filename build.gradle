@@ -21,7 +21,7 @@ allprojects {
 
 subprojects {
     ext {
-        dockerHubName = "qaguru"
+        dockerHubName = "esa87"
 
         lombokVersion = '1.18.34'
         springKafkaVersion = '3.3.2'
@@ -34,7 +34,7 @@ subprojects {
         jakartaJaxbVersion = '4.0.5'
         wsdl4jVersion = '1.6.3'
         protobufVersion = '3.25.3'
-        grpcVersion = '1.63.0'
+        grpcVersion = '1.70.0'
         thumbnailatorVersion = '0.4.20'
         h2Version = '2.3.232'
         mockitoVersion = '5.12.0'

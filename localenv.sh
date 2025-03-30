@@ -5,7 +5,6 @@ docker rm $(docker ps -a -q)
 
 docker run --name rococo-mysql -p 3306:3306 \
   -e MYSQL_ROOT_PASSWORD=secret \
-  -e MYSQL_DATABASE=rococo-gateway \
   -e TZ=GMT+3 \
   -v mysql-data:/var/lib/mysql \
   -v ./mysql/scripts:/docker-entrypoint-initdb.d \

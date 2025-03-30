@@ -2,9 +2,11 @@ package rococo.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import rococo.data.PaintingEntity;
+import grpc.rococo.ArtistResponse;
+import grpc.rococo.CountryResponse;
+import grpc.rococo.MuseumResponse;
+import grpc.rococo.PaintingResponse;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,31 +24,35 @@ public record PaintingJson(
         @JsonProperty("content")
         String content
 ) {
-    public static PaintingJson fromPaintingEntity(PaintingEntity entity) {
+    public static PaintingJson fromPaintingResponse(
+            PaintingResponse paintingResponse,
+            CountryResponse countryResponse,
+            MuseumResponse museumResponse,
+            ArtistResponse artistResponse) {
         return new PaintingJson(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getDescription(),
+                UUID.fromString(paintingResponse.getId()),
+                paintingResponse.getTitle(),
+                paintingResponse.getDescription(),
                 new ArtistJson(
-                        entity.getArtistEntity().getId(),
-                        entity.getArtistEntity().getName(),
-                        entity.getArtistEntity().getBiography(),
-                        entity.getArtistEntity().getPhoto() != null && entity.getArtistEntity().getPhoto().length > 0 ? new String(entity.getArtistEntity().getPhoto(), StandardCharsets.UTF_8) : null
+                        UUID.fromString(artistResponse.getId()),
+                        artistResponse.getName(),
+                        artistResponse.getBiography(),
+                        artistResponse.getPhoto()
                 ),
                 new MuseumJson(
-                        entity.getMuseumEntity().getId(),
-                        entity.getMuseumEntity().getTitle(),
-                        entity.getMuseumEntity().getDescription(),
+                        UUID.fromString(museumResponse.getId()),
+                        museumResponse.getTitle(),
+                        museumResponse.getDescription(),
                         new GeoJson(
-                                entity.getMuseumEntity().getCity(),
+                                museumResponse.getCity(),
                                 new CountryJson(
-                                        entity.getMuseumEntity().getCountry().getId(),
-                                        entity.getMuseumEntity().getCountry().getName()
+                                        UUID.fromString(countryResponse.getId()),
+                                        countryResponse.getName()
                                 )
                         ),
-                        entity.getMuseumEntity().getPhoto()  != null && entity.getMuseumEntity().getPhoto().length > 0 ? new String(entity.getMuseumEntity().getPhoto(), StandardCharsets.UTF_8) : null
+                        museumResponse.getPhoto()
                 ),
-                entity.getContent() != null && entity.getContent().length > 0 ? new String(entity.getContent(), StandardCharsets.UTF_8) : null
+                paintingResponse.getContent()
         );
     }
 }
