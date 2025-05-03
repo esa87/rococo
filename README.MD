@@ -40,7 +40,7 @@ Rococo
 ### Локальный запуск сервисов
 1. Собрать проект, для этого в консоли перейти в корень проекта и выполнить команду: 
 ```posh
-./gradlew build
+./gradlew build -x test
 ```
 
 2. Находясь в корне проекта запустить docker-контейнеры с mysql, kafka и zookeeper командой:
@@ -70,7 +70,7 @@ gradle bootRun --args='--spring.profiles.active=local'
 ```posh
 cd rococo-client
 npm i
-npm run build:dev
+npm run dev
 ```
 
 После запуска всех компонентов можно открыть фронт rococo перейдя по адресу:

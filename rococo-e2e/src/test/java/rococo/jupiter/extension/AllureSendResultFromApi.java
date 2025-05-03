@@ -11,11 +11,10 @@ import java.util.List;
 
 public class AllureSendResultFromApi implements SuiteExtension {
 
-    private final AllureApiClient allureApiClient = new AllureApiClient();
-
     @Override
     public void afterSuite() throws JsonProcessingException {
         if ("docker".equals(System.getProperty("test.env", System.getenv("test.env")))) {
+            final AllureApiClient allureApiClient = new AllureApiClient();
             String projectId = "rococo";
             int needCreateProject = allureApiClient.requestGetProjectsById(projectId);
             if (needCreateProject != 200) {
