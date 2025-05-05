@@ -4,7 +4,7 @@ Rococo
 
 ## Технический стек
 - Java 21
-- Gradle 8.6
+- Gradle 8.10
 - MySQL 8
 - Docker
 
@@ -63,7 +63,13 @@ gradle bootRun --args='--spring.profiles.active=local'
 Или через IDE: запустить main-класс приложения RococoAuthApplication 
 (Убедиться, что в настройках запуска приложения  в поле Environment variables прописано значение  spring.profiles.active=local)
 
-Аналогичным образом запустить остальные микросервисы
+Аналогичным образом запустить остальные микросервисы:
+- `rococo-gateway`
+- `rococo-museum` 
+- `rococo-artist`
+- `rococo-country`
+- `rococo-painting`
+- `rococo-userdata`
 
 4. Запуск фронтенда
    В консоли выполнить следующие команды:
@@ -80,7 +86,7 @@ http://127.0.0.1:3000/
 
 ### Тестирование
 
-Для запуска end-to-end тестов в консоли выполнить следующую команду:
+Для запуска end-to-end тестов в консоли перейти в корень проекта и выполнить следующую команду:
 
 ```posh
 ./gradlew test
