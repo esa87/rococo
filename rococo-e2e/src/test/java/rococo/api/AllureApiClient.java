@@ -1,5 +1,6 @@
 package rococo.api;
 
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.jupiter.api.Assertions;
 import retrofit2.Response;
 import rococo.config.Config;
@@ -17,7 +18,7 @@ public class AllureApiClient extends RestClient {
     private final AllureApi allureApi;
 
     public AllureApiClient() {
-        super(CFG.allureUrl());
+        super(CFG.allureUrl(), HttpLoggingInterceptor.Level.NONE);
         this.allureApi = retrofit.create(AllureApi.class);
     }
 
@@ -34,7 +35,12 @@ public class AllureApiClient extends RestClient {
     public void requestGenerateReport(String projectId) {
         final Response<Void> response;
         try {
-            response = allureApi.generateReport(projectId, null, null, null, null).execute();
+            response = allureApi.generateReport(
+                    projectId,
+                    System.getenv("HEAD_COMMIT_MESSAGE"),
+                    System.getenv("BUILD_URL"),
+                    System.getenv("EXECUTION_TYPE")
+            ).execute();
         } catch (IOException e) {
             throw new AssertionError(e);
         }
@@ -64,5 +70,15 @@ public class AllureApiClient extends RestClient {
         return response.code();
     }
 
+
+    public void requestCleanResults(String projectId){
+        final Response<Void> response;
+        try {
+            response = allureApi.cleanResults(projectId).execute();
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
+        Assertions.assertTrue(200 == response.code());
+    }
 
 }
