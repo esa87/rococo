@@ -52,6 +52,8 @@ jobs:
             echo "Tests failed!"
             exit 1
           fi
+      - name: Debug exit code
+        run: echo "E2E_EXIT_CODE=${{ steps.e2e.outputs.E2E_EXIT_CODE }}"
       - name: Add comment to PR with link to allure
         if: always() && steps.e2e.outcome != 'skipped'
         uses: actions/github-script@v7
