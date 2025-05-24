@@ -53,6 +53,7 @@ jobs:
             exit 1
           fi
       - name: Debug exit code
+        if: always() && steps.e2e.outcome != 'skipped'
         run: echo "E2E_EXIT_CODE=${{ steps.e2e.outputs.E2E_EXIT_CODE }}"
       - name: Add comment to PR with link to allure
         if: always() && steps.e2e.outcome != 'skipped'

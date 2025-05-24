@@ -149,7 +149,7 @@ services:
 
   frontend.rococo.dc:
     container_name: frontend.rococo.dc
-    image: ${PREFIX}/${FRONT}-docker:latest
+    image: ${PREFIX}/rococo-client:latest
     build:
       context: ./rococo-client
       dockerfile: ./Dockerfile
@@ -197,7 +197,7 @@ services:
 
   rococo-e2e:
     profiles: [ test ]
-    container_name: rococo-e2e
+    container_name: rococo-e2e.dc
     image: ${PREFIX}/rococo-e2e:latest
     build:
       context: ./
