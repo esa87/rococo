@@ -197,7 +197,7 @@ services:
 
   rococo-e2e:
     profiles: [ test ]
-    container_name: rococo-e2e.dc
+    container_name: rococo-e2e
     image: ${PREFIX}/rococo-e2e:latest
     build:
       context: ./
