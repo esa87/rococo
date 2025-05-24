@@ -9,29 +9,31 @@ import javax.annotation.Nullable;
 
 public interface AllureApi {
 
-    @POST("/allure-docker-service/projects")
+    @POST("allure-docker-service/projects")
     Call<Void> createProjects(
             @Body CreateProjectRequestJson createProjectRequest
     );
 
-    @POST("/allure-docker-service/send-results")
+    @POST("allure-docker-service/send-results")
     Call<Void> sendResult(
             @Query("project_id") @Nullable String projectId,
             @Query("force_project_creation") @Nullable Boolean forceProjectCreation,
             @Body AllureResultsRequest request
     );
 
-    @GET("/allure-docker-service/generate-report")
+    @GET("allure-docker-service/generate-report")
     Call<Void> generateReport(
             @Query("project_id") String projectId,
             @Query("execution_name") @Nullable String executionName,
             @Query("execution_from") @Nullable String executionFrom,
-            @Query("execution_type") @Nullable String executionType,
-            @Query("clean") @Nullable Boolean cleanReport
+            @Query("execution_type") @Nullable String executionType
     );
 
-    @GET("/allure-docker-service/projects/{id}")
+    @GET("allure-docker-service/clean-results")
+    Call<Void> cleanResults(@Query("project_id") String projectId);
+
+    @GET("allure-docker-service/projects/{id}")
     Call<Void> getProjectsById(
-           @Path("id") String id
+            @Path("id") String id
     );
 }

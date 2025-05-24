@@ -1,6 +1,6 @@
 package rococo.config;
 
-public enum DockerConfig implements Config{
+public enum DockerConfig implements Config {
     INSTANCE;
 
     @Override
@@ -20,7 +20,10 @@ public enum DockerConfig implements Config{
 
     @Override
     public String allureUrl() {
-        return "http://allure:5050";
+        final String url = System.getenv("ALLURE_DOCKER_API");
+        return url == null
+                ? "http://allure:5050/"
+                : url;
     }
 
     @Override

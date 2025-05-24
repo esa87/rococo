@@ -149,7 +149,7 @@ services:
 
   frontend.rococo.dc:
     container_name: frontend.rococo.dc
-    image: ${PREFIX}/${FRONT}-docker:latest
+    image: ${PREFIX}/rococo-client:latest
     build:
       context: ./rococo-client
       dockerfile: ./Dockerfile
