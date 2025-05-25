@@ -5,6 +5,7 @@ spring:
   grpc:
     server:
       port: 8089
+      max-inbound-message-size: 10MB
       servlet:
         enabled: false
   application:
@@ -46,11 +47,6 @@ spring:
   config:
     activate:
       on-profile: 'local'
-  autoconfigure:
-    exclude:
-      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
-      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
-      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
   datasource:
     url: 'jdbc:mysql://127.0.0.1:3306/rococo-userdata?serverTimezone=UTC&createDatabaseIfNotExist=true'
     username: root
@@ -67,11 +63,6 @@ spring:
   config:
     activate:
       on-profile: 'docker'
-  autoconfigure:
-    exclude:
-      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
-      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
-      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
   datasource:
     url: 'jdbc:mysql://rococo-all-db:3306/rococo-userdata?serverTimezone=UTC&createDatabaseIfNotExist=true'
     username: root
