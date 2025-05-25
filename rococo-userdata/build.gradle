@@ -6,7 +6,7 @@ plugins {
 	id 'com.google.cloud.tools.jib' version '3.4.1'
 }
 
-group = 'rococo'
+group = 'guru.qa'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -91,7 +91,3 @@ jib {
 
 tasks.jib.dependsOn test
 tasks.jibDockerBuild.dependsOn test
-
-tasks.named('test') {
-	useJUnitPlatform()
-}

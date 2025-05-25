@@ -4,7 +4,7 @@ plugins {
     id 'com.google.protobuf' version '0.9.4'
 }
 
-group = 'rococo'
+group = 'guru.qa'
 version = '0.0.1-SNAPSHOT'
 
 repositories {
@@ -41,8 +41,4 @@ protobuf {
             }
         }
     }
-}
-
-test {
-    useJUnitPlatform()
 }
