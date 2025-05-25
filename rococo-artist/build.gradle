@@ -90,7 +90,3 @@ jib {
 
 tasks.jib.dependsOn test
 tasks.jibDockerBuild.dependsOn test
-
-tasks.named('test') {
-	useJUnitPlatform()
-}

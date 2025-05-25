@@ -64,7 +64,3 @@ tasks.register('printVersion') {
         println project.version
     }
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
