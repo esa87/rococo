@@ -1,6 +1,7 @@
 package rococo.service;
 
 import jakarta.annotation.Nonnull;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,23 +27,21 @@ public class UserServiceDb implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserJson userFindByName(String username) {
         return userRepository.findByUsername(username)
                 .map(ue ->  UserJson.fromUserEntity(ue)).orElse(new UserJson(null, null, null, null, null));
     }
 
     @Override
+    @Transactional
     public UserJson updateUser(@Nonnull UserJson userJson) {
-        if(userRepository.findByUsername(userJson.username()).isPresent()) {
+        userRepository.findByUsername(userJson.username())
+                .orElseThrow(() -> new EntityNotFoundException("User not found from username: "+userJson.username()));
             UserEntity entity = UserEntity.fromUserJson(userJson);
             userRepository.save(entity);
             return UserJson.fromUserEntity(entity);
-        } else {
-            new RuntimeException("User not found from username: "+userJson.username());
-            return null;
-        }
     }
-
 
     @Transactional
     @KafkaListener(topics = "users", groupId = "userdata")

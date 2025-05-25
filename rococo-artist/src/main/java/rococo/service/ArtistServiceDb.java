@@ -1,6 +1,7 @@
 package rococo.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,6 @@ import rococo.model.ArtistJson;
 import java.util.UUID;
 
 @Service
-@Transactional(readOnly = true)
 public class ArtistServiceDb implements ArtistService {
 
     private final ArtistRepository artistRepository;
@@ -25,6 +25,7 @@ public class ArtistServiceDb implements ArtistService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ArtistJson> allArtist(String name, Pageable pageable) {
         if (!StringUtils.hasText(name)) {
             return artistRepository.findAll(pageable)
@@ -33,10 +34,10 @@ public class ArtistServiceDb implements ArtistService {
             return artistRepository.findByArtistPage(name, pageable)
                     .map(ArtistJson::fromArtistEntity);
         }
-
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ArtistJson artistById(UUID artistId) {
         return artistRepository.findById(artistId)
                 .map(ae -> ArtistJson.fromArtistEntity(ae))
@@ -54,13 +55,10 @@ public class ArtistServiceDb implements ArtistService {
     @Override
     @Transactional
     public ArtistJson updateArtist(ArtistJson artistJson) {
-        if(artistRepository.findById(artistJson.id()).isPresent()){
-            ArtistEntity entity = ArtistEntity.fromArtistJson(artistJson);
-            artistRepository.save(entity);
-            return ArtistJson.fromArtistEntity(entity);
-        } else {
-            new RuntimeException("Artist not found from id: "+artistJson.id());
-            return null;
-        }
+        artistRepository.findById(artistJson.id())
+                .orElseThrow(() -> new EntityNotFoundException("Artist not found with id" + artistJson.id()));
+        ArtistEntity entity = ArtistEntity.fromArtistJson(artistJson);
+        artistRepository.save(entity);
+        return ArtistJson.fromArtistEntity(entity);
     }
 }
