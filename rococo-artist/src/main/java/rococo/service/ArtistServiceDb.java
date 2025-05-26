@@ -12,6 +12,8 @@ import rococo.data.ArtistEntity;
 import rococo.data.ArtistRepository;
 import rococo.model.ArtistJson;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 @Service
@@ -26,7 +28,10 @@ public class ArtistServiceDb implements ArtistService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ArtistJson> allArtist(String name, Pageable pageable) {
+    public Page<ArtistJson> allArtist(
+            @Nullable String name,
+            @Nonnull Pageable pageable
+    ) {
         if (!StringUtils.hasText(name)) {
             return artistRepository.findAll(pageable)
                     .map(ArtistJson::fromArtistEntity);
@@ -38,15 +43,15 @@ public class ArtistServiceDb implements ArtistService {
 
     @Override
     @Transactional(readOnly = true)
-    public ArtistJson artistById(UUID artistId) {
+    public ArtistJson artistById(@Nonnull UUID artistId) {
         return artistRepository.findById(artistId)
-                .map(ae -> ArtistJson.fromArtistEntity(ae))
-                .orElseThrow(() -> new RuntimeException("Artist not fount this id" + artistId));
+                .map(ArtistJson::fromArtistEntity)
+                .orElseThrow(() -> new EntityNotFoundException("Artist not fount this id" + artistId));
     }
 
     @Override
     @Transactional
-    public ArtistJson addArtist(ArtistJson artistJson) {
+    public ArtistJson addArtist(@Nonnull ArtistJson artistJson) {
         ArtistEntity entity = ArtistEntity.fromArtistJson(artistJson);
         artistRepository.save(entity);
         return ArtistJson.fromArtistEntity(entity);
@@ -54,7 +59,7 @@ public class ArtistServiceDb implements ArtistService {
 
     @Override
     @Transactional
-    public ArtistJson updateArtist(ArtistJson artistJson) {
+    public ArtistJson updateArtist(@Nonnull ArtistJson artistJson) {
         artistRepository.findById(artistJson.id())
                 .orElseThrow(() -> new EntityNotFoundException("Artist not found with id" + artistJson.id()));
         ArtistEntity entity = ArtistEntity.fromArtistJson(artistJson);

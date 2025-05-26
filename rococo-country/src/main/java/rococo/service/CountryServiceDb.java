@@ -7,14 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import rococo.data.CountryEntity;
 import rococo.data.CountryRepository;
 import rococo.model.CountryJson;
 
 import java.util.UUID;
 
-@Component
+@Service
 public class CountryServiceDb implements CountryService {
 
     private final CountryRepository countryRepository;
@@ -28,7 +30,7 @@ public class CountryServiceDb implements CountryService {
     @Transactional(readOnly = true)
     public Page<CountryJson> allCountries(@Nullable String searchQuery,
                                           @Nonnull Pageable pageable) {
-        Page<CountryEntity> countryEntityPage = searchQuery == null
+        Page<CountryEntity> countryEntityPage = !StringUtils.hasText(searchQuery)
         ?countryRepository.findAll(pageable)
         :countryRepository.findByCountriesPage(searchQuery,pageable);
         return countryEntityPage.map(CountryJson::fromCountryEntity);
@@ -37,7 +39,7 @@ public class CountryServiceDb implements CountryService {
 
     @Override
     @Transactional(readOnly = true)
-    public CountryJson countryById(UUID countryId) {
+    public CountryJson countryById(@Nonnull UUID countryId) {
         return countryRepository.findById(countryId)
                 .map(ce ->
                         new CountryJson(

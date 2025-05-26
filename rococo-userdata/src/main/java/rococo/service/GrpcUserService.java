@@ -23,21 +23,11 @@ public class GrpcUserService extends UserdataServiceGrpc.UserdataServiceImplBase
 
         responseObserver.onNext(
                 UserResponse.newBuilder()
-                        .setId(userJson.id() == null
-                                ? ""
-                                : userJson.id().toString())
-                        .setUsername(userJson.username() == null
-                                ? ""
-                                : userJson.username())
-                        .setFirstname(userJson.firstname() == null
-                                ? ""
-                                : userJson.firstname())
-                        .setLastname(userJson.lastname() == null
-                                ? ""
-                                : userJson.lastname())
-                        .setAvatar(userJson.avatar() == null
-                                ? ""
-                                : userJson.avatar())
+                        .setId(userJson.id().toString())
+                        .setUsername(userJson.username())
+                        .setFirstname(userJson.firstname())
+                        .setLastname(userJson.lastname())
+                        .setAvatar(userJson.avatar())
                         .build()
         );
         responseObserver.onCompleted();
@@ -57,15 +47,9 @@ public class GrpcUserService extends UserdataServiceGrpc.UserdataServiceImplBase
                 UserResponse.newBuilder()
                         .setId(userJson.id().toString())
                         .setUsername(userJson.username())
-                        .setFirstname(userJson.firstname() == null
-                                ? ""
-                                : userJson.firstname())
-                        .setLastname(userJson.lastname() == null
-                                ? ""
-                                : userJson.lastname())
-                        .setAvatar(userJson.avatar() == null
-                                ? ""
-                                : userJson.avatar())
+                        .setFirstname(userJson.firstname())
+                        .setLastname(userJson.lastname())
+                        .setAvatar(userJson.avatar())
                         .build()
         );
         responseObserver.onCompleted();

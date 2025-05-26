@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rococo.data.MuseumEntity;
 import rococo.data.MuseumRepository;
@@ -14,7 +15,7 @@ import rococo.model.MuseumJson;
 
 import java.util.UUID;
 
-@Component
+@Service
 public class MuseumServiceDb implements MuseumService {
 
     private final MuseumRepository museumRepository;
@@ -36,7 +37,7 @@ public class MuseumServiceDb implements MuseumService {
 
     @Override
     @Transactional(readOnly = true)
-    public MuseumJson museumById(UUID museumId) {
+    public MuseumJson museumById(@Nonnull UUID museumId) {
         return museumRepository.findById(museumId)
                 .map(me -> MuseumJson.fromMuseumEntity(me)).orElseThrow(() -> new RuntimeException("Museum not found this id: " + museumId));
     }

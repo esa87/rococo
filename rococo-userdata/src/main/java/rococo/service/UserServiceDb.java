@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rococo.data.UserEntity;
 import rococo.data.UserRepository;
 import rococo.model.UserJson;
 
-@Component
+@Service
 public class UserServiceDb implements UserService {
 
     private final UserRepository userRepository;
@@ -28,7 +29,7 @@ public class UserServiceDb implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserJson userFindByName(String username) {
+    public UserJson userFindByName(@Nonnull String username) {
         return userRepository.findByUsername(username)
                 .map(ue ->  UserJson.fromUserEntity(ue)).orElse(new UserJson(null, null, null, null, null));
     }
