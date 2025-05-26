@@ -5,7 +5,7 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.grpc.server.service.GrpcService;
+import net.devh.boot.grpc.server.service.GrpcService;
 import rococo.model.ArtistJson;
 
 import java.util.UUID;
