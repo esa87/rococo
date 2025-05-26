@@ -5,13 +5,13 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.grpc.server.service.GrpcService;
 import rococo.model.ArtistJson;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+@GrpcService
 public class GrpcArtistService extends ArtistServiceGrpc.ArtistServiceImplBase {
 
     private final ArtistService artistService;
