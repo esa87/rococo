@@ -1,13 +1,14 @@
 server:
   port: -1
 
+grpc:
+  server:
+    port: 8092
+    max-inbound-message-size: 10MB
+    enable-census: false
+    servlet:
+      enabled: false
 spring:
-  grpc:
-    server:
-      port: 8092
-      max-inbound-message-size: 10MB
-      servlet:
-        enabled: false
   application:
     name: rococo-country
   datasource:
@@ -39,8 +40,8 @@ spring:
 logging:
   level:
     root: INFO
+    net.devh.boot.grpc: DEBUG
     io.grpc: DEBUG
-    org.springframework.grpc: DEBUG
 
 ---
 spring:

@@ -1,11 +1,11 @@
 package rococo.service;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rococo.model.MuseumJson;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public interface MuseumService {

@@ -1,13 +1,15 @@
 server:
   port: -1
 
+
+grpc:
+  server:
+    port: 8094
+    max-inbound-message-size: 10MB
+    enable-census: false
+    servlet:
+      enabled: false
 spring:
-  grpc:
-    server:
-      port: 8094
-      max-inbound-message-size: 10MB
-      servlet:
-        enabled: false
   application:
     name: rococo-painting
   datasource:

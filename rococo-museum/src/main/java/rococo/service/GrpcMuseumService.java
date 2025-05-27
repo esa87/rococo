@@ -2,16 +2,16 @@ package rococo.service;
 
 import grpc.rococo.*;
 import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import rococo.model.MuseumJson;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+@GrpcService
 public class GrpcMuseumService extends MuseumServiceGrpc.MuseumServiceImplBase {
 
     private final MuseumService museumService;
