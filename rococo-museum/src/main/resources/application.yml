@@ -1,19 +1,21 @@
 server:
   port: -1
 
+
+grpc:
+  server:
+    port: 8093
+    max-inbound-message-size: 10MB
+    enable-census: false
+    keep-alive:
+      time: 120s  # Соответствует клиентскому значению
+      timeout: 10s
+      permit-without-calls: false
+    max-connection-age: 1h  # Принудительный реконнект
+    max-connection-age-grace: 30s
+    servlet:
+      enabled: false
 spring:
-  grpc:
-    server:
-      port: 8093
-      max-inbound-message-size: 10MB
-      keep-alive:
-        time: 120s  # Соответствует клиентскому значению
-        timeout: 10s
-        permit-without-calls: false
-      max-connection-age: 1h  # Принудительный реконнект
-      max-connection-age-grace: 30s
-      servlet:
-        enabled: false
   application:
     name: rococo-museum
   datasource:

@@ -1,7 +1,7 @@
 package rococo.service;
 
-import jakarta.annotation.Nonnull;
 import rococo.model.UserJson;
+import javax.annotation.Nonnull;
 
 public interface UserService {
 

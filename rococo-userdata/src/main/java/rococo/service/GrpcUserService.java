@@ -5,10 +5,10 @@ import grpc.rococo.UserResponse;
 import grpc.rococo.UserdataServiceGrpc;
 import grpc.rococo.UsernameRequest;
 import io.grpc.stub.StreamObserver;
-import org.springframework.stereotype.Service;
+import net.devh.boot.grpc.server.service.GrpcService;
 import rococo.model.UserJson;
 
-@Service
+@GrpcService
 public class GrpcUserService extends UserdataServiceGrpc.UserdataServiceImplBase {
 
     private final UserService userService;

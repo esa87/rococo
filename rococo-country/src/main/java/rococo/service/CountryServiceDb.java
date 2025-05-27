@@ -1,12 +1,9 @@
 package rococo.service;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -14,6 +11,8 @@ import rococo.data.CountryEntity;
 import rococo.data.CountryRepository;
 import rococo.model.CountryJson;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 @Service

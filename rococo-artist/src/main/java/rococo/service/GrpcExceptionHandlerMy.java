@@ -1,4 +1,4 @@
-package rococo.config;
+package rococo.service;
 
 
 import com.google.protobuf.ServiceException;
