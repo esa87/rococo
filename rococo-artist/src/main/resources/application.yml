@@ -1,13 +1,14 @@
 server:
   port: -1
 
-spring:
-  grpc:
-    server:
+grpc:
+  server:
       port: 8091
       max-inbound-message-size: 10MB
+      enable-census: false
       servlet:
         enabled: false
+spring:
   application:
     name: rococo-artist
   datasource:
@@ -46,9 +47,8 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate: DEBUG
-    org.flywaydb: DEBUG
+    net.devh.boot.grpc: DEBUG
+    io.grpc: DEBUG
 
 ---
 spring:

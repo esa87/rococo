@@ -20,7 +20,7 @@ public enum LocalConfig implements Config{
 
     @Override
     public String allureUrl() {
-        return "";
+        return "http://127.0.0.1:1111/";
     }
 
     @Override
