@@ -32,7 +32,7 @@ public class BrowserExtension implements
             Configuration.remote = "http://selenoid:4444/wd/hub";
             if ("firefox".equals(browser)) {
                 Configuration.browserVersion = "125.0";
-                Configuration.browserCapabilities = new FirefoxOptions().addArguments("--no-sandbox");
+                Configuration.browserCapabilities = new FirefoxOptions();
             } else {
                 Configuration.browserVersion = "127.0";
                 Configuration.browserCapabilities = new ChromeOptions().addArguments("--no-sandbox");

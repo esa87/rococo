@@ -57,7 +57,7 @@ public class MuseumCardPage extends BasePage<MuseumCardPage> {
 
     @Step("Сделать скриншот изображения музея для визуальной проверки")
     public BufferedImage museumPhotoScreenshot() throws IOException {
-        return ImageIO.read(new MuseumCardPage().museumPicture.shouldBe(visible).screenshot());
+        return ImageIO.read(museumPicture.shouldBe(visible).screenshot());
     }
 
     @Step("Получить текст с названием страны и города музея")

@@ -14,7 +14,6 @@ import java.time.ZonedDateTime;
 @RequestMapping("/api/session")
 public class SessionController {
 
-    @Autowired
     public SessionController() {
     }
 

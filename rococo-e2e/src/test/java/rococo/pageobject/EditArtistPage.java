@@ -17,7 +17,7 @@ public class EditArtistPage extends BasePage<EditArtistPage> {
     private final SelenideElement cancelButton = $("div.text-right button[type='button']");
     private final SelenideElement saveButton = $("button[type='submit']");
 
-    @Step("Заполняем карточку художника")
+    @Step("Заполнить карточку художника: имя '{artist.name()}', биография '{artist.biography()}'")
     public EditArtistPage addArtist(ArtistJson artist) {
         nameInput.sendKeys(artist.name());
         photoInput.sendKeys(new File(artist.photo()).getAbsolutePath());
@@ -25,45 +25,45 @@ public class EditArtistPage extends BasePage<EditArtistPage> {
         return this;
     }
 
-    @Step("Редактируем поле названия художника")
+    @Step("Изменить имя художника на '{namePainting}'")
     public EditArtistPage editNameArtist(String namePainting) {
         nameInput.clear();
         nameInput.sendKeys(namePainting);
         return this;
     }
 
-    @Step("Редактируем поле фотографии художника")
+    @Step("Заменить фото художника (файл: '{urlFile}')")
     public EditArtistPage editPhotoArtist(String urlFile) {
         photoInput.sendKeys(new File(urlFile).getAbsolutePath());
         return this;
     }
 
-    @Step("Редактируем поле описания художника")
+    @Step("Изменить биографию художника на '{biographyArtist}'")
     public EditArtistPage editBiographyArtist(String biographyArtist) {
         biographyTextarea.clear();
         biographyTextarea.sendKeys(biographyArtist);
         return this;
     }
 
-    @Step("")
+    @Step("Сохранить нового художника")
     public ArtistPage saveNewData() {
         saveButton.click();
         return new ArtistPage();
     }
 
-    @Step("а")
+    @Step("Сохранить изменения в карточке художника")
     public ArtistCardPage saveUpdateData() {
         saveButton.click();
         return new ArtistCardPage();
     }
 
-    @Step("Сохраняем карточку художника")
+    @Step("Нажать кнопку 'Сохранить' (без перехода)")
     public EditArtistPage clickSave() {
         saveButton.click();
         return this;
     }
 
-    @Step("Не сохраняем карточку художника")
+    @Step("Отменить редактирование карточки художника")
     public ArtistPage cancelSaveData() {
         cancelButton.click();
         return new ArtistPage();
