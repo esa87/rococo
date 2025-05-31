@@ -1,4 +1,4 @@
-package rococo.config;
+package rococo.service;
 
 import io.grpc.StatusRuntimeException;
 import org.springframework.http.HttpStatus;

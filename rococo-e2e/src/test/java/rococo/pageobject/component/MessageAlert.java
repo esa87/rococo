@@ -5,8 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.$;
 
 public class MessageAlert extends BaseComponent<MessageAlert> {
-    SelenideElement closeButton = $("button.btn-icon-sm");
-    SelenideElement textMessage = $("div.text-base");
+    private final SelenideElement closeButton = $("button.btn-icon-sm");
+    private final SelenideElement textMessage = $("div.text-base");
 
     public MessageAlert() {
         super($("div[role='alertdialog']"));

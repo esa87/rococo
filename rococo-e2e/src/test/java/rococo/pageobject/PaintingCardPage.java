@@ -27,13 +27,13 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
     private final MessageAlert messageAlert = new MessageAlert();
     private final Header header = new Header();
 
-    @Step("Редактируем картину")
+    @Step("Открыть форму редактирования картины")
     public EditPaintingPage editPaintingCard() {
         editPaintingInCardButton.click();
         return new EditPaintingPage();
     }
 
-    @Step("Проверяем что название картины соответствует ожидаемому")
+    @Step("Проверить, что название картины соответствует '{titlePainting}'")
     public PaintingCardPage checkTitlePaintingInCard(String titlePainting) throws InterruptedException {
         Thread.sleep(1000);
         String actualTitlePainting = titlePaintingInCard.getText();
@@ -41,7 +41,7 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
         return this;
     }
 
-    @Step("Проверяем что описание картины соответствует ожидаемому")
+    @Step("Проверить, что описание картины соответствует '{descriptionPainting}'")
     public PaintingCardPage checkDescriptionPaintingInCard(String descriptionPainting) throws InterruptedException {
         Thread.sleep(1000);
         String actualDescriptionPainting = descriptionPaintingInCard.getText();
@@ -49,7 +49,7 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
         return this;
     }
 
-    @Step("Проверяем отображение кнопки редактирования картины, если состояния авторизации пользователя = {needVisibleButton}")
+    @Step("Проверить видимость кнопки редактирования картины (ожидаемо: {needVisibleButton})")
     public PaintingCardPage checkVisibleEditPaintingInCardButton(boolean needVisibleButton) {
         Assertions.assertEquals(
                 needVisibleButton,
@@ -58,7 +58,7 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
         return this;
     }
 
-    @Step("Сравниваем имя художника после редактирования картины")
+    @Step("Проверить, что имя художника соответствует '{artistName}'")
     public PaintingCardPage getArtistValue(String artistName) throws InterruptedException {
         Thread.sleep(1000);
         String actualArtistName = artistPaintingInCard.getText();
@@ -66,29 +66,28 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
         return this;
     }
 
-    @Step("Проверяем, что если в поле описания введено менее 10 символов появляется ошибка")
+    @Step("Проверить отображение ошибки валидации описания (минимум 10 символов)")
     public PaintingCardPage checkVisibleDescriptionMessageError() {
-        descriptionErrorMsg.should(visible);
+        descriptionErrorMsg.shouldBe(visible);
         return this;
     }
 
-    @Step("Get screenshot of avatar picture")
+    @Step("Сделать скриншот изображения картины")
     public BufferedImage avatarScreenshot() throws IOException, InterruptedException {
         Thread.sleep(5000);
-        return ImageIO.read(new PaintingCardPage().paintingPhoto.screenshot());
+        return ImageIO.read(paintingPhoto.screenshot());
     }
 
-    @Step("Close message alert")
+    @Step("Закрыть всплывающее сообщение")
     public PaintingCardPage closeMessage() {
         messageAlert.closeMessage();
         return this;
     }
 
-    @Step("Вернуться на главную страницу через хедер")
+    @Step("Вернуться на главную страницу через шапку сайта")
     public MainPage returnToMainPage() {
         header.returnMainPage();
         return new MainPage();
     }
-
 
 }

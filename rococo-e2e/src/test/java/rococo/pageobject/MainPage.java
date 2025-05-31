@@ -17,6 +17,7 @@ public class MainPage extends BasePage<MainPage> {
     private final SelenideElement artistButton = $("main[id='page-content'] a[href='/artist']");
     private final SelenideElement museumButton = $("main[id='page-content'] a[href='/museum']");
 
+    private final Header header = new Header();
     public static final String URL = CFG.frontUrl();
 
     private final MessageAlert messageAlert = new MessageAlert();
@@ -42,30 +43,30 @@ public class MainPage extends BasePage<MainPage> {
 
     @Step("Проверяем, что пользователь авторизован")
     public MainPage checkAvatarButton() {
-        new Header().checkVisibleAvatarButton();
+        header.checkVisibleAvatarButton();
         return this;
     }
 
     @Step("Проверяем, что пользователь не авторизован")
     public MainPage checkLoginButton() {
-        new Header().checkVisibleButtonLogin();
+        header.checkVisibleButtonLogin();
         return this;
     }
 
     @Step("Нажимаем на кнопку 'Войти'")
     public LoginPage openLoginPage() {
-        return new Header().openLogin();
+        return header.openLogin();
     }
 
     @Step("Открываем профиль пользователя")
     public ProfilePage openUserProfile() {
-        return new Header().openProfilePage();
+        return header.openProfilePage();
     }
 
     @Step("Get screenshot of avatar picture")
     public BufferedImage avatarScreenshot() throws IOException, InterruptedException {
         Thread.sleep(5000);
-        return new Header().avatarScreenshot();
+        return header.avatarScreenshot();
     }
 
     @Step("Закрыть всплывающее сообщение в карточке музея")

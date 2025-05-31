@@ -26,21 +26,21 @@ public class ArtistCardPage extends BasePage<ArtistCardPage>{
 
     private final MessageAlert messageAlert = new MessageAlert();
 
-    @Step("Открываем карточку на редактирование художника ")
-    public EditArtistPage openEditArtistCard(){
+    @Step("Открываем карточку на редактирование художника")
+    public EditArtistPage openEditArtistCard() {
         editArtistInCardButton.click();
         return new EditArtistPage();
     }
 
-    @Step("Проверяем что название художника соответствует ожидаемому")
-    public ArtistCardPage checkNameArtistInCard(String nameArtist){
+    @Step("Проверяем, что название художника соответствует ожидаемому: {nameArtist}")
+    public ArtistCardPage checkNameArtistInCard(String nameArtist) {
         String actualNameArtist = nameArtistInCard.getText();
         Assertions.assertEquals(nameArtist, actualNameArtist);
         return this;
     }
 
-    @Step("Проверяем отображение кнопки редактирования художника, если состояния авторизации пользователя = {needVisibleButton}")
-    public ArtistCardPage checkVisibleEditArtistInCardButton(boolean needVisibleButton){
+    @Step("Проверяем отображение кнопки редактирования художника (ожидаемо: {needVisibleButton})")
+    public ArtistCardPage checkVisibleEditArtistInCardButton(boolean needVisibleButton) {
         Assertions.assertEquals(
                 needVisibleButton,
                 editArtistInCardButton.isDisplayed()
@@ -48,8 +48,8 @@ public class ArtistCardPage extends BasePage<ArtistCardPage>{
         return this;
     }
 
-    @Step("Проверяем отображение кнопки добавить картину, если состояния авторизации пользователя = {needVisibleButton}")
-    public ArtistCardPage checkVisibleAddPaintingInCardButton(boolean needVisibleButton){
+    @Step("Проверяем отображение кнопки 'Добавить картину' (ожидаемо: {needVisibleButton})")
+    public ArtistCardPage checkVisibleAddPaintingInCardButton(boolean needVisibleButton) {
         Assertions.assertEquals(
                 needVisibleButton,
                 addPaintingInCardButton.isDisplayed()
@@ -57,37 +57,34 @@ public class ArtistCardPage extends BasePage<ArtistCardPage>{
         return this;
     }
 
-    @Step("Проверяем соответствие текста в поле биографии")
-    public ArtistCardPage checkValueBiography(String expectedBiography){
+    @Step("Проверяем соответствие текста в поле биографии (ожидаемо: {expectedBiography})")
+    public ArtistCardPage checkValueBiography(String expectedBiography) {
         final String actualBiography = biographyField.getText();
         Assertions.assertEquals(expectedBiography, actualBiography);
         return this;
     }
 
-    @Step("")
-    public ArtistCardPage closeMessageAlert(){
+    @Step("Закрываем всплывающее сообщение")
+    public ArtistCardPage closeMessageAlert() {
         messageAlert.closeMessage();
         return this;
     }
 
-    @Step("")
+    @Step("Делаем скриншот фотографии художника")
     public BufferedImage artistPhotoScreenshot() throws IOException {
-        return ImageIO.read(new ArtistCardPage().artistPhoto.shouldBe(visible).screenshot());
+        return ImageIO.read(artistPhoto.shouldBe(visible).screenshot());
     }
 
-    @Step("")
-    public EditPaintingPage openPaintingForm(){
+    @Step("Открываем форму добавления новой картины")
+    public EditPaintingPage openPaintingForm() {
         addPaintingInCardButton.click();
         return new EditPaintingPage();
     }
 
-    @Step("")
-    public ArtistCardPage checkPaintingIsCreate(){
-        Assertions.assertTrue(listPaintings.size()>0);
+    @Step("Проверяем, что хотя бы одна картина создана")
+    public ArtistCardPage checkPaintingIsCreate() {
+        Assertions.assertTrue(listPaintings.size() > 0);
         return this;
     }
-
-
-
 
 }
