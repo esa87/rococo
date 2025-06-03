@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import rococo.service.client.UserGrpcClientService;
 import rococo.model.UserJson;
+import rococo.service.exception.GrpcExceptionUtil;
 
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 @Component
 public class UserServiceToClientGrpc implements UserService {
 
     private final UserGrpcClientService userGrpcClientService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceToClientGrpc.class);
 
     @Autowired
     public UserServiceToClientGrpc(UserGrpcClientService userGrpcClientService) {
@@ -25,14 +26,21 @@ public class UserServiceToClientGrpc implements UserService {
 
     @Override
     public UserJson userFindByName(String username) {
-        CompletableFuture<UserResponse> response = userGrpcClientService.getUser(username);
-        return response.thenApply(UserJson::fromUserResponse).join();
+        try {
+            UserResponse response = userGrpcClientService.getUser(username).join();
+            return UserJson.fromUserResponse(response);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e);
+        }
     }
-
 
     @Override
     public UserJson updateUser(@Nonnull UserJson userJson) {
-        CompletableFuture<UserResponse> response = userGrpcClientService.updateUser(userJson);
-        return response.thenApply(UserJson::fromUserResponse).join();
+        try {
+            UserResponse response = userGrpcClientService.updateUser(userJson).join();
+            return UserJson.fromUserResponse(response);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e, userJson.id());
+        }
     }
 }

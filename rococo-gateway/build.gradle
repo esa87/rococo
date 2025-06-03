@@ -50,6 +50,7 @@ dependencies {
 	compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
 	annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
 
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 	// Тестирование
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

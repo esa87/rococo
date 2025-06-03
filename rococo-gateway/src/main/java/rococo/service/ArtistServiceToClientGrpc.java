@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import rococo.controller.exception.*;
 import rococo.service.client.ArtistGrpcClientService;
 import rococo.model.ArtistJson;
+import rococo.service.exception.GrpcExceptionUtil;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 @Component
 public class ArtistServiceToClientGrpc implements ArtistService {
@@ -26,34 +28,48 @@ public class ArtistServiceToClientGrpc implements ArtistService {
     }
 
     @Override
-    public Page<ArtistJson> allArtist(String searchQuery,
-                                      Pageable pageable) {
-        CompletableFuture<ArtistsPageResponse> response = artistGrpcClientService.getAllArtists(searchQuery, pageable);
-
-        return response.thenApply(resp -> {
-            List<ArtistJson> artistJsonList = resp.getArtistsList().stream()
-                    .map(ArtistJson::fromArtistResponse)
-                    .toList();
-            return new PageImpl<>(artistJsonList);
-        }).join();
+    public Optional<ArtistJson> getArtistById(UUID id) {
+        try {
+            ArtistResponse response = artistGrpcClientService.getArtistById(id.toString()).join();
+            return Optional.of(ArtistJson.fromArtistResponse(response));
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e, id);
+        }
     }
 
     @Override
-    public ArtistJson artistById(UUID artistId) {
-        CompletableFuture<ArtistResponse> response = artistGrpcClientService.getArtistById(artistId.toString());
-        return response.thenApply(ArtistJson::fromArtistResponse).join();
+    public Page<ArtistJson> getAllArtists(String name, Pageable pageable) {
+        try {
+            ArtistsPageResponse response = artistGrpcClientService.getAllArtists(name, pageable).join();
+            return new PageImpl<>(
+                    response.getArtistsList().stream()
+                            .map(ArtistJson::fromArtistResponse)
+                            .toList()
+            );
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e, null);
+        }
     }
 
     @Override
-    public ArtistJson addArtist(ArtistJson artistJson) {
-        CompletableFuture<ArtistResponse> response = artistGrpcClientService.addArtist(artistJson);
-
-        return response.thenApply(ArtistJson::fromArtistResponse).join();
+    public ArtistJson addArtist(ArtistJson artist) {
+        try {
+            ArtistResponse response = artistGrpcClientService.addArtist(artist).join();
+            return ArtistJson.fromArtistResponse(response);
+        } catch (CompletionException e) {
+            throw  GrpcExceptionUtil.convertGrpcException(e, null);
+        }
     }
 
     @Override
-    public ArtistJson updateArtist(ArtistJson artistJson) {
-        CompletableFuture<ArtistResponse> response = artistGrpcClientService.updateArtist(artistJson);
-        return response.thenApply(ArtistJson::fromArtistResponse).join();
+    public ArtistJson updateArtist(ArtistJson artist) {
+        try {
+            ArtistResponse response = artistGrpcClientService.updateArtist(artist).join();
+            return ArtistJson.fromArtistResponse(response);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e, artist.id());
+        }
     }
+
+
 }

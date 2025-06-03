@@ -13,10 +13,12 @@ import org.springframework.stereotype.Component;
 import rococo.service.client.CountryGrpcClientService;
 import rococo.service.client.MuseumGrpcClientService;
 import rococo.model.MuseumJson;
+import rococo.service.exception.GrpcExceptionUtil;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,7 +28,8 @@ public class MuseumServiceToClientGrpc implements MuseumService {
     private final CountryGrpcClientService countryGrpcClientService;
 
     @Autowired
-    public MuseumServiceToClientGrpc(MuseumGrpcClientService museumGrpcClientService, CountryGrpcClientService countryGrpcClientService) {
+    public MuseumServiceToClientGrpc(MuseumGrpcClientService museumGrpcClientService,
+                                     CountryGrpcClientService countryGrpcClientService) {
         this.museumGrpcClientService = museumGrpcClientService;
         this.countryGrpcClientService = countryGrpcClientService;
     }
@@ -34,76 +37,58 @@ public class MuseumServiceToClientGrpc implements MuseumService {
     @Override
     public Page<MuseumJson> allMuseums(@Nullable String searchQuery,
                                        @Nonnull Pageable pageable) {
+        try {
+            MuseumsPageResponse response = museumGrpcClientService.getAllMuseums(searchQuery, pageable).join();
 
-        // Асинхронный запрос списка музеев
-        CompletableFuture<MuseumsPageResponse> museumsFuture = museumGrpcClientService.getAllMuseums(searchQuery, pageable);
-
-        // Обработка результатов
-        return museumsFuture.thenApply(response -> {
-            List<CompletableFuture<MuseumJson>> museumFutures = response.getMuseumsList().stream()
+            List<MuseumJson> museums = response.getMuseumsList().parallelStream()
                     .map(museum -> {
-                        // Асинхронный запрос страны для каждого музея
-                        CompletableFuture<CountryResponse> countryFuture = countryGrpcClientService.getCountryById(museum.getCountryId());
-
-                        // Объединение результатов
-                        return countryFuture.thenApply(country ->
-                                MuseumJson.fromMuseumResponse(museum, country)
-                        );
+                        try {
+                            CountryResponse country = countryGrpcClientService
+                                    .getCountryById(museum.getCountryId())
+                                    .join();
+                            return MuseumJson.fromMuseumResponse(museum, country);
+                        } catch (CompletionException e) {
+                            throw GrpcExceptionUtil.convertGrpcException(e);
+                        }
                     })
                     .collect(Collectors.toList());
 
-            // Ожидание завершения всех запросов
-            List<MuseumJson> museumJsonList = museumFutures.stream()
-                    .map(CompletableFuture::join)
-                    .collect(Collectors.toList());
-
-            return new PageImpl<>(museumJsonList);
-        }).join(); // Блокируем, чтобы вернуть результат
-
+            return new PageImpl<>(museums);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e);
+        }
     }
 
     @Override
     public MuseumJson museumById(@Nonnull UUID museumId) {
-        CompletableFuture<MuseumResponse> response = museumGrpcClientService.getMuseumById(museumId.toString());
-        CompletableFuture<MuseumJson> result = response.thenCompose(museum -> {
-            CompletableFuture<CountryResponse> country = countryGrpcClientService.getCountryById(museum.getCountryId());
-
-            return country.thenApply(c ->
-                    MuseumJson.fromMuseumResponse(museum, c)
-            );
-        });
-
-        // Блокируем поток и возвращаем результат
-        return result.join();
+        try {
+            MuseumResponse museum = museumGrpcClientService.getMuseumById(museumId.toString()).join();
+            CountryResponse country = countryGrpcClientService.getCountryById(museum.getCountryId()).join();
+            return MuseumJson.fromMuseumResponse(museum, country);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e, museumId);
+        }
     }
 
     @Override
     public MuseumJson addMuseum(@Nonnull MuseumJson museumJson) {
-        CompletableFuture<MuseumResponse> response = museumGrpcClientService.addMuseum(museumJson);
-        CompletableFuture<MuseumJson> result = response.thenCompose(
-                museum -> {
-                    CompletableFuture<CountryResponse> countryResponse = countryGrpcClientService.getCountryById(museum.getCountryId());
-
-                    return countryResponse.thenApply(c ->
-                            MuseumJson.fromMuseumResponse(museum, c)
-                    );
-                }
-        );
-        return result.join();
+        try {
+            MuseumResponse museum = museumGrpcClientService.addMuseum(museumJson).join();
+            CountryResponse country = countryGrpcClientService.getCountryById(museum.getCountryId()).join();
+            return MuseumJson.fromMuseumResponse(museum, country);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e);
+        }
     }
 
     @Override
     public MuseumJson updateMuseum(@Nonnull MuseumJson museumJson) {
-        CompletableFuture<MuseumResponse> response = museumGrpcClientService.updateMuseum(museumJson);
-        CompletableFuture<MuseumJson> result = response.thenCompose(
-                museum -> {
-                    CompletableFuture<CountryResponse> countryResponse = countryGrpcClientService.getCountryById(museum.getCountryId());
-
-                    return countryResponse.thenApply(c ->
-                            MuseumJson.fromMuseumResponse(museum, c)
-                    );
-                }
-        );
-        return result.join();
+        try {
+            MuseumResponse museum = museumGrpcClientService.updateMuseum(museumJson).join();
+            CountryResponse country = countryGrpcClientService.getCountryById(museum.getCountryId()).join();
+            return MuseumJson.fromMuseumResponse(museum, country);
+        } catch (CompletionException e) {
+            throw GrpcExceptionUtil.convertGrpcException(e, museumJson.id());
+        }
     }
 }
