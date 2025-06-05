@@ -22,25 +22,19 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
     private final AuthClientRest authClientRest = new AuthClientRest();
     private final UserdataGrpcClient userdataApiClient = new UserdataGrpcClient();
 
-    private final boolean setupBrowser;
+    private boolean setupBrowser;
 
-    private ApiLoginExtension(boolean setupBrowser) {
-        this.setupBrowser = setupBrowser;
-    }
+
 
     public ApiLoginExtension() {
-        this.setupBrowser = true;
     }
 
-    public static ApiLoginExtension rest() {
-        return new ApiLoginExtension(false);
-    }
 
     @Override
     public void beforeTestExecution(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), ApiLogin.class)
                 .ifPresent(apiLogin -> {
-
+                    setupBrowser = apiLogin.setupBrowser();
                     final UserJson userToLogin;
                     final UserJson userFromUserExtension = UserExtension.getUserJson(context);
                     if ("".equals(apiLogin.username()) || "".equals(apiLogin.password())) {

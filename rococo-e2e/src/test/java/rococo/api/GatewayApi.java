@@ -72,7 +72,7 @@ public interface GatewayApi {
             @Header("Authorization") @Nullable String bearerToken
     );
 
-    @PATCH("bearerToken")
+    @PATCH("api/artist")
     Call<ArtistJson> updateArtist(
             @Body @Nonnull ArtistJson artistJson,
             @Header("Authorization") @Nullable String bearerToken
@@ -90,7 +90,7 @@ public interface GatewayApi {
 
     @GET("/api/museum")
     Call<MuseumPageResponse> getAllMuseum(
-            @Query("name") @Nullable String name,
+            @Query("title") @Nullable String title,
             @Query("page") int page,
             @Query("size") int size,
             @Query("sort") @Nullable String sort,

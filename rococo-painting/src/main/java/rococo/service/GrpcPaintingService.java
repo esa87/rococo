@@ -41,6 +41,8 @@ public class GrpcPaintingService extends PaintingServiceGrpc.PaintingServiceImpl
                                 )
                                 .collect(Collectors.toList())
                 )
+                .setTotalPages(paintings.getTotalPages())
+                .setTotalElements(paintings.getTotalElements())
                 .build();
 
         responseObserver.onNext(response);

@@ -35,10 +35,10 @@ public class MuseumServiceToClientGrpc implements MuseumService {
     }
 
     @Override
-    public Page<MuseumJson> allMuseums(@Nullable String searchQuery,
+    public Page<MuseumJson> allMuseums(@Nullable String title,
                                        @Nonnull Pageable pageable) {
         try {
-            MuseumsPageResponse response = museumGrpcClientService.getAllMuseums(searchQuery, pageable).join();
+            MuseumsPageResponse response = museumGrpcClientService.getAllMuseums(title, pageable).join();
 
             List<MuseumJson> museums = response.getMuseumsList().parallelStream()
                     .map(museum -> {
@@ -53,7 +53,11 @@ public class MuseumServiceToClientGrpc implements MuseumService {
                     })
                     .collect(Collectors.toList());
 
-            return new PageImpl<>(museums);
+            return new PageImpl<>(
+                    museums,
+                    pageable,
+                    response.getTotalElements()
+            );
         } catch (CompletionException e) {
             throw GrpcExceptionUtil.convertGrpcException(e);
         }

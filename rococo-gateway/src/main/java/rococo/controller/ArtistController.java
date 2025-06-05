@@ -41,10 +41,8 @@ public class ArtistController {
         return artistService.addArtist(artist);
     }
 
-    @PatchMapping("/{id}")
-    public ArtistJson updateArtist(
-            @PathVariable @Nonnull UUID id,
-            @RequestBody @Nonnull ArtistJson artist) {
+    @PatchMapping
+    public ArtistJson updateArtist(@RequestBody @Nonnull ArtistJson artist) {
         return artistService.updateArtist(artist);
     }
 }

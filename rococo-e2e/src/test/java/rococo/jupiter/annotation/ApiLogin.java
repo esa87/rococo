@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 
 public @interface ApiLogin {
+    boolean setupBrowser() default true;
+
     String username() default "";
 
     String password() default "";

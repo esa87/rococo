@@ -27,6 +27,8 @@ message Pageable {
 
 message CountriesResponse {
     repeated CountryResponse countries = 1;
+    int32 total_pages = 2;
+    int64 total_elements = 3;
 }
 
 message CountryResponse {

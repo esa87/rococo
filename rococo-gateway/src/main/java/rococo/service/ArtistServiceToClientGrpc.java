@@ -13,6 +13,7 @@ import rococo.service.client.ArtistGrpcClientService;
 import rococo.model.ArtistJson;
 import rococo.service.exception.GrpcExceptionUtil;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletionException;
@@ -40,12 +41,20 @@ public class ArtistServiceToClientGrpc implements ArtistService {
     @Override
     public Page<ArtistJson> getAllArtists(String name, Pageable pageable) {
         try {
-            ArtistsPageResponse response = artistGrpcClientService.getAllArtists(name, pageable).join();
-            return new PageImpl<>(
-                    response.getArtistsList().stream()
-                            .map(ArtistJson::fromArtistResponse)
-                            .toList()
-            );
+            return artistGrpcClientService.getAllArtists(name, pageable)
+                    .thenApply(response -> {
+                        List<ArtistJson> artists = response.getArtistsList().stream()
+                                .map(ArtistJson::fromArtistResponse)
+                                .toList();
+
+                        return new PageImpl<>(
+                                artists,
+                                pageable,
+                                response.getTotalElements()
+                        );
+                    })
+                    .join();
+
         } catch (CompletionException e) {
             throw GrpcExceptionUtil.convertGrpcException(e, null);
         }
@@ -57,7 +66,7 @@ public class ArtistServiceToClientGrpc implements ArtistService {
             ArtistResponse response = artistGrpcClientService.addArtist(artist).join();
             return ArtistJson.fromArtistResponse(response);
         } catch (CompletionException e) {
-            throw  GrpcExceptionUtil.convertGrpcException(e, null);
+            throw GrpcExceptionUtil.convertGrpcException(e, null);
         }
     }
 

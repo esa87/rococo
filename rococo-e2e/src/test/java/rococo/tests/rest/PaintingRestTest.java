@@ -27,7 +27,7 @@ public class PaintingRestTest {
     @DisplayName("Изменение названия картины не должно создавать дубликат")
     @Painting
     @User
-    @ApiLogin
+    @ApiLogin(setupBrowser = false)
     @Test
     void checkDuplicateAfterChangeTitle(PaintingJson painting, @Token String token) {
         String title = RandomDataUtils.randomName();
@@ -50,7 +50,7 @@ public class PaintingRestTest {
     @DisplayName("Изменение описания картины не должно создавать дубликат")
     @Painting
     @User
-    @ApiLogin
+    @ApiLogin(setupBrowser = false)
     @Test
     void checkDuplicateAfterChangeDescription(PaintingJson painting, @Token String token) {
 

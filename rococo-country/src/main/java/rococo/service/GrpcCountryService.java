@@ -36,6 +36,8 @@ public class GrpcCountryService extends CountryServiceGrpc.CountryServiceImplBas
                                 )
                                 .collect(Collectors.toList())
                 )
+                .setTotalPages(countriesPage.getTotalPages())
+                .setTotalElements(countriesPage.getTotalElements())
                 .build();
 
         responseObserver.onNext(response);

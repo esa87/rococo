@@ -37,6 +37,8 @@ public class GrpcArtistService extends ArtistServiceGrpc.ArtistServiceImplBase {
                                 )
                                 .collect(Collectors.toList())
                 )
+                .setTotalPages(artists.getTotalPages())
+                .setTotalElements(artists.getTotalElements())
                 .build();
 
         responseObserver.onNext(response);

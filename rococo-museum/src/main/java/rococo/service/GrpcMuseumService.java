@@ -40,6 +40,8 @@ public class GrpcMuseumService extends MuseumServiceGrpc.MuseumServiceImplBase {
                                 )
                                 .collect(Collectors.toList())
                 )
+                .setTotalPages(museumJsons.getTotalPages())
+                .setTotalElements(museumJsons.getTotalElements())
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

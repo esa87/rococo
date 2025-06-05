@@ -32,16 +32,16 @@ public class GatewayApiClient extends RestClient {
 
     // Методы для работы с художниками
     @Step("Получить список художников с параметрами: "
-            + "name='{name}', size={size}, page={page}, sort='{sort}'")
+            + "title='{title}', size={size}, page={page}, sort='{sort}'")
     public ArtistPageResponse getAllArtist(
-            @Nullable String name,
+            @Nullable String title,
             int size,
             int page,
             @Nullable String sort,
             @Nullable String bearerToken) {
         final Response<ArtistPageResponse> response;
         try {
-            response = gatewayApi.getAllArtists(name, size, page, sort, bearerToken).execute();
+            response = gatewayApi.getAllArtists(title, size, page, sort, bearerToken).execute();
         } catch (IOException e) {
             throw new AssertionError("Ошибка при выполнении запроса получения списка художников", e);
         }
@@ -71,7 +71,7 @@ public class GatewayApiClient extends RestClient {
         } catch (IOException e) {
             throw new AssertionError("Ошибка при добавлении художника: " + artistJson.name(), e);
         }
-        assertEquals(200, response.code(), "Неверный HTTP-статус ответа");
+        assertEquals(201, response.code(), "Неверный HTTP-статус ответа");
         return response.body();
     }
 
@@ -161,7 +161,7 @@ public class GatewayApiClient extends RestClient {
 
     @Step("Обновить картину {paintingJson.id}. Новые данные: "
             + "название: {paintingJson.title}, "
-            + "художник: {paintingJson.artistId}")
+            + "художник: {paintingJson.artist.id}")
     public PaintingJson updatePainting(@Nonnull PaintingJson paintingJson,
                                        @Nullable String bearerToken) {
         final Response<PaintingJson> response;
@@ -200,13 +200,13 @@ public class GatewayApiClient extends RestClient {
             + "сортировка: {sort}")
     public MuseumPageResponse getAllMuseum(
             @Nullable String name,
-            int size,
             int page,
+            int size,
             @Nullable String sort,
             @Nullable String bearerToken) {
         final Response<MuseumPageResponse> response;
         try {
-            response = gatewayApi.getAllMuseum(name, size, page, sort, bearerToken).execute();
+            response = gatewayApi.getAllMuseum(name, page, size, sort, bearerToken).execute();
         } catch (IOException e) {
             throw new AssertionError("Ошибка при получении списка музеев с параметрами: "
                     + "name=" + name + ", page=" + page + ", size=" + size + ", sort=" + sort, e);

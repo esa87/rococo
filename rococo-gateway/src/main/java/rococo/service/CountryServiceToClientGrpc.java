@@ -11,6 +11,7 @@ import rococo.service.client.CountryGrpcClientService;
 import rococo.model.CountryJson;
 import rococo.service.exception.GrpcExceptionUtil;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletionException;
@@ -29,11 +30,17 @@ public class CountryServiceToClientGrpc implements CountryService {
     public Page<CountryJson> getAllCountries(String searchQuery, Pageable pageable) {
         try {
             return countryGrpcClientService.getAllCountries(searchQuery, pageable)
-                    .thenApply(response -> new PageImpl<>(
-                            response.getCountriesList().stream()
-                                    .map(CountryJson::fromCountryResponse)
-                                    .toList()
-                    ))
+                    .thenApply(response -> {
+                        List<CountryJson> countries = response.getCountriesList().stream()
+                                .map(CountryJson::fromCountryResponse)
+                                .toList();
+
+                        return new PageImpl<>(
+                                countries,
+                                pageable,
+                                response.getTotalElements()
+                        );
+                    })
                     .join();
         } catch (CompletionException e) {
             throw GrpcExceptionUtil.convertGrpcException(e);

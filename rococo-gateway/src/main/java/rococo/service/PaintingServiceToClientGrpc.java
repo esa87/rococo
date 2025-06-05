@@ -41,24 +41,46 @@ public class PaintingServiceToClientGrpc implements PaintingService {
     }
 
     @Override
-    public Page<PaintingJson> allPaintings(@Nullable String searchQuery, @Nonnull Pageable pageable) {
+    public Page<PaintingJson> allPaintings(@Nullable String searchQuery,
+                                           @Nonnull Pageable pageable) {
         try {
-            PaintingsPageResponse response = paintingGrpcClientService.getAllPaintings(searchQuery, pageable).join();
+            PaintingsPageResponse response = paintingGrpcClientService
+                    .getAllPaintings(searchQuery, pageable)
+                    .join();
 
-            List<PaintingJson> paintings = response.getPaintingsList().parallelStream()
+            List<PaintingJson> paintings = response.getPaintingsList()
+                    .parallelStream()
                     .map(painting -> {
                         try {
-                            MuseumResponse museum = museumGrpcClientService.getMuseumById(painting.getMuseumId()).join();
-                            CountryResponse country = countryGrpcClientService.getCountryById(museum.getCountryId()).join();
-                            ArtistResponse artist = artistGrpcClientService.getArtistById(painting.getArtistId()).join();
-                            return PaintingJson.fromPaintingResponse(painting, country, museum, artist);
+                            CompletableFuture<MuseumResponse> museumFuture = museumGrpcClientService
+                                    .getMuseumById(painting.getMuseumId());
+
+                            CompletableFuture<CountryResponse> countryFuture = museumFuture
+                                    .thenCompose(museum -> countryGrpcClientService
+                                            .getCountryById(museum.getCountryId()));
+
+                            CompletableFuture<ArtistResponse> artistFuture = artistGrpcClientService
+                                    .getArtistById(painting.getArtistId());
+
+                            CompletableFuture.allOf(museumFuture, countryFuture, artistFuture).join();
+
+                            return PaintingJson.fromPaintingResponse(
+                                    painting,
+                                    countryFuture.join(),
+                                    museumFuture.join(),
+                                    artistFuture.join()
+                            );
                         } catch (CompletionException e) {
                             throw GrpcExceptionUtil.convertGrpcException(e);
                         }
                     })
                     .collect(Collectors.toList());
 
-            return new PageImpl<>(paintings);
+            return new PageImpl<>(
+                    paintings,                   // Список картин на текущей странице
+                    pageable,                    // Параметры пагинации
+                    response.getTotalElements()  // Общее количество элементов
+            );
         } catch (CompletionException e) {
             throw GrpcExceptionUtil.convertGrpcException(e);
         }
