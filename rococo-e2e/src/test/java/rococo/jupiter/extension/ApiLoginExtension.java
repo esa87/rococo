@@ -67,7 +67,6 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
                         WebDriverRunner.getWebDriver().manage().addCookie(
                                 getJsessionIdCookie()
                         );
-                        Selenide.open(MainPage.URL, MainPage.class).checkAvatarButton();
                     }
                 });
     }

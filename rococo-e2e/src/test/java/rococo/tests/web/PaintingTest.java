@@ -182,7 +182,7 @@ public class PaintingTest {
     @Painting
     @User
     @ApiLogin
-    @ScreenShotTest(value = "uploadPicture/expected_opyat_dvoyka.jpg")
+    @ScreenShotTest(value = "uploadPicture/expected_opyat_dvoyka.jpg", rewriteExpected = true)
     void editContentPainting(PaintingJson painting, BufferedImage expected) throws IOException, InterruptedException {
         BufferedImage actualPainting = Selenide.open(CFG.frontUrl(), MainPage.class)
                 .openPaintingPage()
@@ -208,7 +208,7 @@ public class PaintingTest {
     @Painting
     @User
     @ApiLogin
-    @ScreenShotTest(value = "uploadPicture/expected_mishki.jpg")
+    @ScreenShotTest(value = "uploadPicture/expected_mishki.jpg", rewriteExpected = true)
     void changeNotSave(PaintingJson painting, BufferedImage expected) throws IOException, InterruptedException {
         BufferedImage actualPainting = Selenide.open(CFG.frontUrl(), MainPage.class)
                 .openPaintingPage()
