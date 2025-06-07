@@ -61,7 +61,7 @@ public class ArtistRestTest {
         );
         gatewayApiClient.updateArtist(updatedArtist, token);
 
-        ArtistPageResponse artistsPage = gatewayApiClient.getAllArtist(artist.name(), 10, 0, null, token);
+        ArtistPageResponse artistsPage = gatewayApiClient.getAllArtist(artist.name(), 11, 0, null, token);
 
         Assertions.assertEquals(1, artistsPage.getContent().size());
     }
