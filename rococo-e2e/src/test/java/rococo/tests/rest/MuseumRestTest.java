@@ -121,7 +121,7 @@ public class MuseumRestTest {
 
         MuseumPageResponse response = gatewayApiClient.getAllMuseum(newTitle, 0, 10, null, token);
 
-        Assertions.assertEquals(1, response.getContent().size());
+        Assertions.assertEquals(1, response.getContent().size(), String.valueOf(response.getContent().stream().map(x -> x.title()).toList()));
     }
 
 }

@@ -93,7 +93,7 @@ public class MuseumTest {
     @Museum
     @User
     @ApiLogin
-    @ScreenShotTest(value = "uploadPicture/expected_newMuseum.jpg")
+    @ScreenShotTest(value = "uploadPicture/expected_newMuseum.jpg", rewriteExpected = true)
     void editMuseumPhoto(MuseumJson museum, BufferedImage expected) throws IOException, InterruptedException {
         BufferedImage result = Selenide.open(CFG.frontUrl(), MainPage.class)
                 .openMuseumPage()

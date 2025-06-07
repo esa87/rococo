@@ -43,7 +43,7 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
                                                     new ArtistJson(
                                                             null,
                                                             paintingAnno.artist().name().equals("")
-                                                                    ? RandomDataUtils.randomName()
+                                                                    ? RandomDataUtils.randomName()+UUID.randomUUID()
                                                                     : paintingAnno.artist().name(),
                                                             paintingAnno.artist().biography(),
                                                             null
@@ -53,7 +53,7 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
                                             museumClient.addMuseum(new MuseumJson(
                                                     null,
                                                     paintingAnno.museum().title().equals("")
-                                                            ? RandomDataUtils.randomName()
+                                                            ? RandomDataUtils.randomName()+UUID.randomUUID()
                                                             : paintingAnno.museum().title(),
                                                     paintingAnno.museum().description(),
                                                     new GeoJson(

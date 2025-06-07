@@ -30,7 +30,7 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museum.class)
                 .ifPresent(museumAnno -> {
                     if ("".equals(museumAnno.title())) {
-                        final String title = RandomDataUtils.randomName();
+                        final String title = RandomDataUtils.randomName()+UUID.randomUUID();
                         MuseumJson testMuseum = null;
                         try {
                             testMuseum = museumClient.addMuseum(

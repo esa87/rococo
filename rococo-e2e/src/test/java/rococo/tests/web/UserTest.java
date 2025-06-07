@@ -63,7 +63,7 @@ public class UserTest {
     @Test
     @User
     @ApiLogin
-    @ScreenShotTest(value = "uploadPicture/expected_avatar.png")
+    @ScreenShotTest(value = "uploadPicture/expected_avatar.png", rewriteExpected = true)
     void editAvatar(UserJson user, BufferedImage expected) throws IOException, InterruptedException {
         String firstname = RandomDataUtils.randomName();
         BufferedImage actualAvatar = Selenide.open(CFG.frontUrl(), MainPage.class)

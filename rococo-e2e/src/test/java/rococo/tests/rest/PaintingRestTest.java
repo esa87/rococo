@@ -67,6 +67,6 @@ public class PaintingRestTest {
 
         List<PaintingJson> paintingJsonList = gatewayApiClient.getAllPaintings(painting.title(), 0, 10, null, token);
 
-        Assertions.assertTrue(paintingJsonList.size()==1);
+        Assertions.assertEquals(1, paintingJsonList.size(), String.valueOf(paintingJsonList.stream().map(x->x.title()).toList()));
     }
 }

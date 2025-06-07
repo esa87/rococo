@@ -2,6 +2,7 @@ package rococo.jupiter.extension;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Allure;
 import rococo.api.*;
 import rococo.config.Config;
 import rococo.jupiter.annotation.ApiLogin;
@@ -24,11 +25,8 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
 
     private boolean setupBrowser;
 
-
-
     public ApiLoginExtension() {
     }
-
 
     @Override
     public void beforeTestExecution(ExtensionContext context) {
@@ -52,7 +50,7 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
                         if (userFromUserExtension != null) {
                             throw new IllegalStateException("@User must not be present in case that @ApiLogin contains username or password!");
                         }
-                        UserExtension.setUser(context,fakeUser);
+                        UserExtension.setUser(context, fakeUser);
                         userToLogin = fakeUser;
                     }
 
@@ -67,6 +65,13 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
                         WebDriverRunner.getWebDriver().manage().addCookie(
                                 getJsessionIdCookie()
                         );
+                        Selenide.refresh();
+                        //kolhoz
+                        if(Selenide.localStorage().getItem("id_token") == null){
+                            Selenide.localStorage().setItem("id_token", getToken());
+                        }
+                        Selenide.refresh();
+                        new MainPage().checkAvatarButton();
                     }
                 });
     }

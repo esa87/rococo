@@ -155,7 +155,7 @@ public class PaintingTest {
                 .saveData();
         PaintingJson result = gatewayApiClient.getPaintingById(painting.id(), token);
 
-        Assertions.assertNotEquals(painting.museum().title(), result.museum().title());
+        Assertions.assertNotEquals(painting.museum().title(), result.museum().title(), "Expected: "+painting.museum().title()+" actual: "+result.museum().title());
     }
 
     @Description("Проверка редактирования художника для картины")
