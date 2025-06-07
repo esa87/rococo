@@ -73,7 +73,7 @@ public class ArtistTest {
     @User
     @ApiLogin
     @Artist
-    @ScreenShotTest(value = "uploadPicture/expected_Polenov_V_D.jpg")
+    @ScreenShotTest(value = "uploadPicture/expected_Polenov_V_D.jpg", rewriteExpected = true)
     void editArtistPhoto(ArtistJson artist, BufferedImage expected) throws IOException {
         BufferedImage result = Selenide.open(CFG.frontUrl(), MainPage.class)
                 .openArtistPage()

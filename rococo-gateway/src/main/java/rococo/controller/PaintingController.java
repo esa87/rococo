@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import rococo.model.PaintingJson;
 import rococo.service.PaintingService;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/painting")
@@ -17,57 +19,36 @@ public class PaintingController {
 
     private final PaintingService paintingService;
 
-    @Autowired
     public PaintingController(PaintingService paintingService) {
         this.paintingService = paintingService;
     }
 
-    @GetMapping()
-    public ResponseEntity<Page<PaintingJson>> all(
+    @GetMapping
+    public Page<PaintingJson> getAllPaintings(
             @RequestParam(required = false) String title,
-            @PageableDefault Pageable pageable) {
-        try {
-            return ResponseEntity.ok(paintingService.allPaintings(title, pageable));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to get paintings", e);
-        }
+            @PageableDefault @Nonnull Pageable pageable) {
+        return paintingService.allPaintings(title, pageable);
     }
 
     @GetMapping("/author/{id}")
-    public ResponseEntity<Page<PaintingJson>> allForArtist(
-            @PathVariable UUID id,
-            @PageableDefault Pageable pageable) {
-        try {
-            return ResponseEntity.ok(paintingService.allPaintingsForArtist(id, pageable));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to get artist paintings", e);
-        }
+    public Page<PaintingJson> getPaintingsByArtist(
+            @PathVariable @Nonnull UUID id,
+            @PageableDefault @Nonnull Pageable pageable) {
+        return paintingService.allPaintingsForArtist(id, pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaintingJson> currentPainting(@PathVariable UUID id) {
-        try {
-            return ResponseEntity.ok(paintingService.paintingById(id));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to get painting", e);
-        }
+    public PaintingJson getPaintingById(@PathVariable @Nonnull UUID id) {
+        return paintingService.paintingById(id);
     }
 
-    @PostMapping()
-    public ResponseEntity<PaintingJson> add(@RequestBody PaintingJson paintingJson) {
-        try {
-            return ResponseEntity.ok(paintingService.addPainting(paintingJson));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to add painting", e);
-        }
+    @PostMapping
+    public PaintingJson createPainting(@RequestBody @Nonnull PaintingJson paintingJson) {
+        return paintingService.addPainting(paintingJson);
     }
 
-    @PatchMapping()
-    public ResponseEntity<PaintingJson> update(@RequestBody PaintingJson paintingJson) {
-        try {
-            return ResponseEntity.ok(paintingService.updatePainting(paintingJson));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to update painting", e);
-        }
+    @PatchMapping
+    public PaintingJson updatePainting(@RequestBody @Nonnull PaintingJson paintingJson) {
+        return paintingService.updatePainting(paintingJson);
     }
 }

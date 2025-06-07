@@ -19,7 +19,7 @@ public class ArtistGrpcClientService {
     // Получить всех художников с пагинацией
     public CompletableFuture<ArtistsPageResponse> getAllArtists(String searchQuery, Pageable pageable) {
         AllArtistRequest request = AllArtistRequest.newBuilder()
-                .setSearchQuery(searchQuery==null?"":searchQuery)
+                .setSearchQuery(searchQuery == null ? "" : searchQuery)
                 .setPageable(ArtistsPageRequest.newBuilder()
                         .setPage(pageable.getPageNumber())
                         .setSize(pageable.getPageSize())
@@ -55,7 +55,9 @@ public class ArtistGrpcClientService {
         ArtistRequest request = ArtistRequest.newBuilder()
                 .setName(artist.name())
                 .setBiography(artist.biography())
-                .setPhoto(artist.photo())
+                .setPhoto(artist.photo() != null
+                        ? artist.photo()
+                        : "")
                 .build();
         return CompletableFuture.supplyAsync(() -> {
             try {

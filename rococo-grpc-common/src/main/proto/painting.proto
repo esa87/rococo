@@ -35,6 +35,8 @@ message PaintingsPageRequest {
 
 message PaintingsPageResponse {
     repeated PaintingResponse paintings = 1;
+    int32 total_pages = 2;
+    int64 total_elements = 3;
 }
 
 message PaintingRequest {

@@ -8,13 +8,14 @@ import rococo.domain.Country;
 import rococo.model.CountryJson;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CountryService {
-    Page<CountryJson> allCountries(
+    Page<CountryJson> getAllCountries(
             @Nullable String searchQuery,
             @Nonnull Pageable pageable
             );
 
-    CountryJson countryById(UUID countryId);
+    Optional<CountryJson> getCountryById(UUID countryId);
 }

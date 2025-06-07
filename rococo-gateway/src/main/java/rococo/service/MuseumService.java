@@ -10,7 +10,7 @@ import rococo.model.MuseumJson;
 import java.util.UUID;
 
 public interface MuseumService {
-    Page<MuseumJson> allMuseums(@Nullable String searchQuery,
+    Page<MuseumJson> allMuseums(@Nullable String title,
                                 @Nonnull @PageableDefault Pageable pageable);
 
     MuseumJson museumById(UUID museumId);

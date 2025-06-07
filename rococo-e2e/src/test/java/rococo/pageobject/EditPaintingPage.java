@@ -72,6 +72,15 @@ public class EditPaintingPage extends BasePage<EditPaintingPage> {
     @Step("Сохранить валидные данные картины с переходом в карточку")
     public PaintingCardPage saveData() {
         saveButton.click();
+        int step = 0;
+        while (saveButton.isDisplayed() && step < 5) {
+            try {
+                Thread.sleep(1000);
+                step++;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return new PaintingCardPage();
     }
 

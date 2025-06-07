@@ -17,7 +17,7 @@ public class EditArtistPage extends BasePage<EditArtistPage> {
     private final SelenideElement cancelButton = $("div.text-right button[type='button']");
     private final SelenideElement saveButton = $("button[type='submit']");
 
-    @Step("Заполнить карточку художника: имя '{artist.name()}', биография '{artist.biography()}'")
+    @Step("Заполнить карточку художника: имя '{artist.name}', биография '{artist.biography}'")
     public EditArtistPage addArtist(ArtistJson artist) {
         nameInput.sendKeys(artist.name());
         photoInput.sendKeys(new File(artist.photo()).getAbsolutePath());

@@ -60,7 +60,7 @@ public class PaintingCardPage extends BasePage<PaintingCardPage> {
 
     @Step("Проверить, что имя художника соответствует '{artistName}'")
     public PaintingCardPage getArtistValue(String artistName) throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         String actualArtistName = artistPaintingInCard.getText();
         Assertions.assertEquals(artistName, actualArtistName);
         return this;
